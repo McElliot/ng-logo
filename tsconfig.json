@@ -16,6 +16,32 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "captcha": [
+        "dist/captcha"
+      ],
+      "captcha/*": [
+        "dist/captcha/*"
+      ],
+      "modal": [
+        "dist/modal"
+      ],
+      "modal/*": [
+        "dist/modal/*"
+      ],
+      "core": [
+        "dist/core"
+      ],
+      "core/*": [
+        "dist/core/*"
+      ],
+      "loading": [
+        "dist/loading"
+      ],
+      "loading/*": [
+        "dist/loading/*"
+      ]
+    }
   }
 }
