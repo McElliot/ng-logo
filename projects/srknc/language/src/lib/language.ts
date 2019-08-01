@@ -18,4 +18,5 @@ export class LanguageInitSetting {
   abbr: string;
   path?: string;
   readFromFile?: boolean;
+  extension?: string;
 }

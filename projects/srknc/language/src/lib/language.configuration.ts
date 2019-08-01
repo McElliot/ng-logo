@@ -15,6 +15,9 @@ export function LanguageConfigurationFactory(initSetting: LanguageInitSetting) {
   languageConfiguration.setDefault(initSetting.abbr);
   languageConfiguration.setPath(initSetting.path ? initSetting.path : '/assets/languages');
   languageConfiguration.setReadFromFile(initSetting.readFromFile);
+  if (!!initSetting.extension) {
+    languageConfiguration.setExtension(initSetting.extension);
+  }
   return languageConfiguration;
 }
 
@@ -65,8 +68,12 @@ export class LanguageConfiguration {
     this.assetsPath = path;
   }
 
+  setExtension(extension: string) {
+    this.extension = extension;
+  }
+
   addLanguage(language: Language) {
-    if (this.findLanguage(language.code)) {
+    if (!this.findLanguage(language.code)) {
       this.list.push(language);
     }
   }

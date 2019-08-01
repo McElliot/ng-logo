@@ -6,7 +6,7 @@ import {AppComponent} from './app.component';
 import {LanguageModule} from '../../projects/srknc/language/src/lib/language.module';
 
 
-const languageModule = LanguageModule.forRoot({abbr: 'en', readFromFile: true});
+const languageModule = LanguageModule.forRoot({abbr: 'en', readFromFile: false, extension: 'json'});
 
 @NgModule({
   declarations: [AppComponent],
