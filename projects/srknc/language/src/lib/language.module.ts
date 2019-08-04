@@ -29,7 +29,12 @@ const PIPES = [LanguagePipe];
   exports: [PIPES]
 })
 export class LanguageModule {
-  static forRoot(config: LanguageInitSetting): ModuleWithProviders {
+  static forRoot(config?: LanguageInitSetting): ModuleWithProviders {
+    if (!config) {
+      config = {abbr: 'en'};
+    } else if (!config.abbr) {
+      config.abbr = 'en';
+    }
     return {
       ngModule: LanguageModule,
       providers: [

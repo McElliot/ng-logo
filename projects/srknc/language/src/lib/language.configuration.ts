@@ -12,7 +12,7 @@ import {Language, LanguageInitSetting} from './language';
 
 export function LanguageConfigurationFactory(initSetting: LanguageInitSetting) {
   const languageConfiguration = new LanguageConfiguration();
-  languageConfiguration.setDefault(initSetting.abbr);
+  languageConfiguration.setDefault(initSetting.abbr || 'en');
   languageConfiguration.setPath(initSetting.path ? initSetting.path : '/assets/languages');
   languageConfiguration.setReadFromFile(initSetting.readFromFile);
   if (!!initSetting.extension) {
