@@ -1,15 +1,15 @@
-### Language Module Usage
+## Language Translation
 
-With this module you can easly translate any text to specified language on the fly. 
+With this module you can easly translate any text to specified language on the fly. Over HTTP or LOCAL file resource can be usable.
 
-##Installation
+### Installation
 There are three steps:
 
  - Install package using `npm install @srknc/language` 
  - add it to your AppModule imports code block using `LanguageModule.forRoot(languageConf)`
  - Put your language files to your `assets/languages` folder (assets/language/en-En.json etc.). 
 
-##Configuration
+### Configuration
 
 Default language is "en". You can also change language to "tr". There are some options for customization:
 
