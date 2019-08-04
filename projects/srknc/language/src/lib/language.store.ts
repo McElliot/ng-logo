@@ -35,7 +35,7 @@ export class LanguageStoreService {
   }
 
   getLanguageFromPath(language: Language) {
-    import(`../../../../../src/assets/languages/${this.config.default.code}.${this.config.extension}`)
+    import(`../../../../src/assets/languages/${this.config.default.code}.${this.config.extension}`)
       .then((file) => {
           this.file = file;
           this.onLoadComplete.emit();

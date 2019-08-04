@@ -9,6 +9,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "author": "Serkan Konakcı <serkan.konakci@logo.com.tr> (http://www.serkankonakci.com)",
+  "homepage": "http://www.logo.com.tr",
+  "description": "Angular.io multi-language support module. Just import and use. This library is an open-source project.",
   "dependencies": {
     "@angular/animations": "~7.0.0",
     "@angular/common": "~7.0.0",
@@ -19,6 +22,7 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
+    "@srknc/language": "0.0.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
