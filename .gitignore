@@ -40,7 +40,4 @@ Thumbs.db
 
 
 #LanguageModule
-projects/captcha/
-projects/core/
-projects/loading/
-projects/modal/
+.git-lang
