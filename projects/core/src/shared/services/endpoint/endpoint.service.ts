@@ -99,7 +99,7 @@ export interface RequestOption {
     [header: string]: string | string[];
   };
   reportProgress?: boolean;
-  observe?: 'response';
+  observe?: any;
   params?: HttpParams | {
     [param: string]: string | string[];
   };
@@ -115,36 +115,28 @@ interface SubscriptionMethods {
 
 @Injectable()
 export class EndpointService {
-  public loading = false;
-  public instance: Observable<any>;
 
   constructor(private http: HttpClient, private loadingService: LoadingService) {
   }
 
-  request(method: string, url: string, options: RequestOption = {}): EndpointService {
+  request(method: string, url: string, options: RequestOption = {}): Observable<any> {
     options.observe = options && options.observe ? options.observe : 'response';
     options.responseType = options.responseType ? options.responseType : ResponseContentEnum.Json;
     const headers = new HttpHeaders(Object.assign({}, {'Content-Type': 'application/json'}, options.headers));
-    this.instance = this.http.request(method, url, {...options, headers: headers});
-    return this;
+    return this.http.request(method, url, {...options, headers: headers});
   }
 
-  subscribe(methods: SubscriptionMethods) {
-    this.loadingService.status(true);
-    this.instance.subscribe(
-      (response) => methods.success(response),
-      (errorResponse: ErrorResponse<any>) => {
-        this.loadingService.status(false, 'error');
-        if (methods.error) {
-          methods.error(errorResponse);
-        }
-      },
-      () => {
-        this.loadingService.status(false, 'comple');
-        if (methods.complete) {
-          methods.complete();
-        }
-      }
-    );
+  get(url: string, options: RequestOption = {}): Observable<any> {
+    options.observe = options && options.observe ? options.observe : 'response';
+    options.responseType = options.responseType ? options.responseType : ResponseContentEnum.Json;
+    const headers = new HttpHeaders(Object.assign({}, {'Content-Type': 'application/json'}, options.headers));
+    return this.http.get(url, {...options, headers: headers});
+  }
+
+  post(url: string, body: RequestBody, options: RequestOption = {}): Observable<any> {
+    options.observe = options && options.observe ? options.observe : 'response';
+    options.responseType = options.responseType ? options.responseType : ResponseContentEnum.Json;
+    const headers = new HttpHeaders(Object.assign({}, {'Content-Type': 'application/json'}, options.headers));
+    return this.http.post(url, body, {...options, headers: headers});
   }
 }
