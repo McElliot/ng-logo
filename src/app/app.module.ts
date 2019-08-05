@@ -3,14 +3,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {LanguageModule} from '@srknc/language';
+import {LanguageInitSetting, LanguageModule} from '@srknc/language';
 
-
-const languageModule = LanguageModule.forRoot({abbr: 'en', readFromFile: true, extension: 'json'});
+const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
+const EXTERNAL_MODULES = [LanguageModule.forRoot(languageConf)];
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, languageModule],
+  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, EXTERNAL_MODULES],
   providers: [],
   bootstrap: [AppComponent]
 })
