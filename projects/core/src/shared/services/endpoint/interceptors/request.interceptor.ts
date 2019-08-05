@@ -1,5 +1,5 @@
 import {HTTP_INTERCEPTORS, HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 
 import {retry, tap} from 'rxjs/operators';
 import {StorageClass} from '~/shared/services/storage/storage.service';
@@ -7,10 +7,11 @@ import {Observable, throwError} from 'rxjs';
 import {LoggerService} from '~/shared/services/logger/logger.service';
 import {User} from '~/shared/components/user/user';
 import {ToastService} from '~/shared/components/toast/toast.service';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class RequestInterceptor implements HttpInterceptor {
-  constructor(private toastService: ToastService) {
+  constructor(private toastService: ToastService, private router: Router, private ngZone: NgZone) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -33,8 +34,16 @@ export class RequestInterceptor implements HttpInterceptor {
     ));
   }
 
+  ngZoneRedirect() {
+    setTimeout(() => this.ngZone.run(() => {
+        this.router.navigate(['/error']);
+      })
+    );
+  }
+
   private handleError(errorResponse: HttpErrorResponse) {
-    this.toastService.error(errorResponse.error.message);
+    // this.toastService.error(errorResponse.error.message);
+    // this.ngZoneRedirect();
     // if (errorResponse.error instanceof ErrorEvent) {
     //   console.error('An error occurred:', errorResponse.error.message);
     // } else {
