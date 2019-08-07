@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
 import {LanguageService} from '@logo/language';
+import {StorageClass} from '../../projects/logo/core/src/lib/core.module';
+import {StateService} from '../../projects/logo/core/src/shared/services/state/state.service';
+import {RouterLinkActive} from '@angular/router';
 
 @Component({
   selector: 'lbs-root',
@@ -7,17 +10,27 @@ import {LanguageService} from '@logo/language';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'logo-ng-library';
+  titleFromStorage = 'logo-ng-library';
+  titleFromState = 'logo-ng-library';
+  route: RouterLinkActive;
 
-  constructor(private languageService: LanguageService) {
-    this.addLanguage();
+  constructor(private languageService: LanguageService, private ss: StateService) {
+    this.setState();
+    this.setStorage();
   }
 
-  setLanguage(lang: string = 'tr') {
-    this.languageService.setLanguage(lang);
+  setState() {
+    this.ss.set('titleFromState', 'titleFromState is set here');
+    this.titleFromState = this.ss.get('titleFromState');
   }
 
-  addLanguage() {
-    this.languageService.addLanguage({abbr: 'ro', code: 'ro-RO', display: 'Romain'});
+  setStorage() {
+    StorageClass.setItem('titleFromStorage', 'titleFromStorage is set here');
+    this.titleFromStorage = StorageClass.getItem('titleFromStorage');
+  }
+
+  isActiveRoute($event) {
+    this.route = $event;
+    console.log('activeroute');
   }
 }

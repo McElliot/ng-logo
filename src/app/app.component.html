@@ -1,7 +1,18 @@
-<h1>Set Language</h1>
-<div>{{'login-info' | translate}}</div>
-<button (click)="setLanguage('tr')">tr</button>
-<button (click)="setLanguage('en')">en</button>
-<button (click)="setLanguage('ro')">ro</button>
+<h1>Set State</h1>
+<div>{{titleFromState}}</div>
+
+<h1>Set Storage</h1>
+<div>{{titleFromStorage}}</div>
+
+<h1>isActiveRoute directive</h1>
+<a
+  [routerLink]="[]"
+  routerLinkActive="accordion-active"
+  #reference="routerLinkActive"
+  [isActiveRoute]="reference"
+  (isActiveEmitter)="isActiveRoute($event)"
+>
+  name
+</a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
 
 <router-outlet></router-outlet>
