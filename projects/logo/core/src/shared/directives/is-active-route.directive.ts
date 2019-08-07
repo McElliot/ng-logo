@@ -9,7 +9,7 @@ import {Subscription} from 'rxjs';
  *    routerLinkActive="accordion-active"
  *    #reference="routerLinkActive"
  *    [isActiveRoute]="reference"
- *    (isActiveEmitter)="isActiveRoute($event)"
+ *    (isActiveRouteEmitter)="isActiveRoute($event)"
  *  >
  *  Link to Home
  *  </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
@@ -19,7 +19,7 @@ import {Subscription} from 'rxjs';
 })
 export class IsActiveRouteDirective implements AfterContentInit, OnDestroy {
   @Input() isActiveRoute: RouterLinkActive;
-  @Output() isActiveEmitter: EventEmitter<RouterLinkActive> = new EventEmitter<RouterLinkActive>();
+  @Output() isActiveRouteEmitter: EventEmitter<RouterLinkActive> = new EventEmitter<RouterLinkActive>();
   private subscription: Subscription;
 
   constructor(private router: Router) {
@@ -41,7 +41,7 @@ export class IsActiveRouteDirective implements AfterContentInit, OnDestroy {
   private update(): void {
     Promise.resolve().then(() => {
       if (this.isActiveRoute.isActive) {
-        this.isActiveEmitter.emit(this.isActiveRoute);
+        this.isActiveRouteEmitter.emit(this.isActiveRoute);
       }
     });
   }

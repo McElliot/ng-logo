@@ -1,13 +1,3 @@
-/**
- * @licence
- * Copyright 2017 HepsiExpress Limited. All Rights Reserved.
- *
- * Save to the extent permitted by law, you may not use, copy, modify,
- * distribute or create derivative works of this material or any part
- * of it without the prior written consent of HepsiExpress Limited.
- * Any reproduction of this material must contain this notice.
- */
-
 import {Pipe, PipeTransform} from '@angular/core';
 import {DatePipe, DecimalPipe} from '@angular/common';
 
@@ -26,9 +16,9 @@ export class FormatPipe implements PipeTransform {
   decimalPipe = new DecimalPipe('en-US');
 
   transform(input: string, args: any): any {
+    const pipeArgs = args.split(':');
     let format = '';
     let parsedFloat = 0;
-    let pipeArgs = args.split(':');
     for (let i = 0; i < pipeArgs.length; i++) {
       pipeArgs[i] = pipeArgs[i].trim(' ');
     }

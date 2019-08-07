@@ -10,7 +10,7 @@
   routerLinkActive="accordion-active"
   #reference="routerLinkActive"
   [isActiveRoute]="reference"
-  (isActiveEmitter)="isActiveRoute($event)"
+  (isActiveRouteEmitter)="isActiveRoute($event)"
 >
   name
 </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}

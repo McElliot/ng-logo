@@ -1,12 +1,12 @@
 import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output, Renderer2} from '@angular/core';
 
 @Directive({
-  selector: '[appVideoSnapshot]'
+  selector: '[snapshot]'
 })
 export class VideoSnapshotDirective implements AfterViewInit {
-  @Input() appVideoSnapshot: any;
+  @Input() snapshot: any;
   @Input() scale = 0.25;
-  @Output() snapshot: EventEmitter<HTMLCanvasElement> = new EventEmitter<HTMLCanvasElement>();
+  @Output() snapshotEmitter: EventEmitter<HTMLCanvasElement> = new EventEmitter<HTMLCanvasElement>();
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {
   }
@@ -27,7 +27,7 @@ export class VideoSnapshotDirective implements AfterViewInit {
   }
 
   shoot() {
-    this.snapshot.emit(this.capture(this.elementRef));
+    this.snapshotEmitter.emit(this.capture(this.elementRef));
     // this.renderer.appendChild(this.elementRef.nativeElement.parentElement, this.capture(this.elementRef));
   }
 }

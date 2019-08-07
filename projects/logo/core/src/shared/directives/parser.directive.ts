@@ -1,12 +1,12 @@
 import {Directive, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewContainerRef} from '@angular/core';
 
 @Directive({
-  selector: '[appHtmlParser]',
+  selector: '[htmlParser]',
 })
 export class HTMLParserDirective implements OnInit {
-
   @Input() span = true;
-  @Output() trigger: EventEmitter<{ element, index }> = new EventEmitter<{ element, index }>();
+  @Input() removeEmptyTagList: string[] = ['p', 'strong', 'ol', 'ul', 'li', 'em'];
+  @Output() htmlParserEmitter: EventEmitter<{ element, index }> = new EventEmitter<{ element, index }>();
   wordIndex = 0;
   rawHTML = null;
   formattedText = '';
@@ -30,7 +30,7 @@ export class HTMLParserDirective implements OnInit {
   }
 
   init() {
-    this.formattedText = this.start(this.removeEmptyTags(this.rawHTML).trim(), ['p', 'strong', 'ol', 'ul', 'li', 'em']);
+    this.formattedText = this.start(this.removeEmptyTags(this.rawHTML).trim(), this.removeEmptyTagList);
     this.pushToElementRef(this.formattedText);
     this.setEvents();
   }
@@ -44,10 +44,11 @@ export class HTMLParserDirective implements OnInit {
   }
 
   setEvents() {
-    this.elementRef.nativeElement.querySelectorAll('span').forEach((item, key) => item.addEventListener('click', () => this.trigger.emit({
-      element: item,
-      index: key
-    })));
+    this.elementRef.nativeElement.querySelectorAll('span').forEach((item, key) =>
+      item.addEventListener('click', () => this.htmlParserEmitter.emit({
+        element: item,
+        index: key
+      })));
   }
 
   addTagWithSpace(text: string) {
