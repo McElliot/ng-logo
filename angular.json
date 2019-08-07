@@ -137,7 +137,7 @@
       "root": "projects/srknc/language",
       "sourceRoot": "projects/srknc/language/src",
       "projectType": "library",
-      "prefix": "lib",
+      "prefix": "",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
