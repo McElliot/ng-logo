@@ -4,4 +4,21 @@
 <button (click)="setLanguage('en')">en</button>
 <button (click)="setLanguage('ro')">ro</button>
 
+<h1>Set State</h1>
+<div>{{titleFromState}}</div>
+
+<h1>Set Storage</h1>
+<div>{{titleFromStorage}}</div>
+
+<h1>isActiveRoute directive</h1>
+<a
+  #reference="routerLinkActive"
+  (isActiveRouteEmitter)="isActiveRoute($event)"
+  [isActiveRoute]="reference"
+  [routerLink]="[]"
+  routerLinkActive="accordion-active"
+>
+  name
+</a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
+
 <router-outlet></router-outlet>
