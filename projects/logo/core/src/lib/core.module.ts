@@ -1,4 +1,4 @@
-import {InjectionToken, Injector, ModuleWithProviders, NgModule} from '@angular/core';
+import {ModuleWithProviders, NgModule} from '@angular/core';
 import {IsActiveRouteDirective} from '../shared/directives/is-active-route.directive';
 import {LastDirective} from '../shared/directives/last.directive';
 import {HTMLParserDirective} from '../shared/directives/parser.directive';
@@ -10,9 +10,7 @@ import {StateService} from '../shared/services/state/state.service';
 import {WatcherService} from '../shared/services/watcher/watcher.service';
 import {FormatPipe} from '../shared/pipe/format.pipe';
 import {OrderPipe} from '../shared/pipe/order.pipe';
-import {STORAGE_TYPES, StorageFactory, StorageService} from '../shared/services/storage/storage.service';
-
-export const STORAGE_TYPE_CONFIG = new InjectionToken<string>('storage_type');
+import {STORAGE_TYPE_CONFIG, STORAGE_TYPES, StorageFactory, StorageService} from '../shared/services/storage/storage.service';
 
 const DIRECTIVES = [IsActiveRouteDirective, LastDirective, HTMLParserDirective, VariableDirective, VideoSnapshotDirective];
 const SERVICES = [EndpointService, LoggerService, StateService, WatcherService];

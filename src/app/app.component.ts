@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {LanguageService} from '@logo/language';
-import {StorageClass} from '../../projects/logo/core/src/lib/core.module';
-import {StateService} from '../../projects/logo/core/src/shared/services/state/state.service';
 import {RouterLinkActive} from '@angular/router';
+import {StateService, StorageClass} from '@logo/core';
 
 @Component({
   selector: 'lbs-root',

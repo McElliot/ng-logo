@@ -1,13 +1,3 @@
-/**
- * @license
- * Copyright Serkan KONAKCI Rights Reserved.
- *
- * Save to the extent permitted by law, you may not use, copy, modify,
- * distribute or create derivative works of this material or any part
- * of it without the prior written consent of Serkan KONAKCI.
- * Any reproduction of this material must contain this notice.
- */
-
 export class Util {
 
   /**
@@ -61,7 +51,8 @@ export class Util {
    * @param value - The target data from which will learn the type.
    */
   static type(value: any): string {
-    return Object.prototype.toString.call(value).match(/^\[object (.*)\]$/)[1];
+    const reg = new RegExp(/^\[object (.*)\]$/);
+    return Object.prototype.toString.call(value).match(reg)[1];
   }
 
   /**
@@ -76,7 +67,7 @@ export class Util {
    * @param debug - If it is true, will generate output to the console
    */
   static contains(value: any, filter: any, exact = true, debug = false) {
-    return !Object.keys(filter).some(key => {
+    const method = key => {
       let nValue = value[key];
       let nFilter = filter[key];
       if (nFilter !== null && typeof nFilter !== 'undefined' && Util.type(nFilter) !== 'Object' &&
@@ -104,7 +95,8 @@ export class Util {
           return !(nValue === nFilter);
         }
       }
-    });
+    };
+    return !Object.keys(filter).some(method);
   }
 
   /**
@@ -162,9 +154,10 @@ export class Util {
 
 
   static findRemoveUnique(array: any[]) {
-    return array.filter(function (item, pos) {
+    const filter = (item, pos) => {
       return array.indexOf(item) === pos;
-    });
+    };
+    return array.filter(filter);
   }
 
   /**
