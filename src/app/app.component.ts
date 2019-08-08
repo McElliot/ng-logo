@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
-import {StateService} from '../../projects/logo/core/src/shared/services/state/state.service';
-import {StorageClass} from '../../projects/logo/core/src/lib/core.module';
+import {StateService, StorageClass} from '@logo/core';
 
 @Component({
   selector: 'lbs-root',
@@ -14,7 +13,6 @@ export class AppComponent {
   titleFromState = 'logo-ng-library';
   route: RouterLinkActive;
   base64String = 'c2Vya2Fu'; // Base64 Directive
-  inputValue; // Mask Directive
 
   constructor(private languageService: LanguageService, private ss: StateService) {
     this.setState();

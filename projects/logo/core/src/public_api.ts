@@ -4,8 +4,11 @@
 
 export * from './lib/core.module';
 // DIRECTIVES
+export * from './shared/directives/autofocus.directive';
+export * from './shared/directives/base64.directive';
 export * from './shared/directives/is-active-route.directive';
 export * from './shared/directives/last.directive';
+export * from './shared/directives/mask.directive';
 export * from './shared/directives/parser.directive';
 export * from './shared/directives/variable.directive';
 export * from './shared/directives/video-snapshot.directive';
