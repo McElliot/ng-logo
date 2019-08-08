@@ -22,7 +22,7 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
-    "@logo/core": "0.0.3",
+    "@logo/core": "0.0.4",
     "@logo/language": "0.0.1",
     "core-js": "^2.5.4",
     "moment": "^2.24.0",
