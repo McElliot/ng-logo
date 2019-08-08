@@ -41,4 +41,5 @@ Thumbs.db
 
 #libraries
 .git-*
+node_modules
 

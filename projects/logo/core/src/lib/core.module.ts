@@ -11,8 +11,19 @@ import {WatcherService} from '../shared/services/watcher/watcher.service';
 import {FormatPipe} from '../shared/pipe/format.pipe';
 import {OrderPipe} from '../shared/pipe/order.pipe';
 import {STORAGE_TYPE_CONFIG, STORAGE_TYPES, StorageFactory, StorageService} from '../shared/services/storage/storage.service';
+import {MaskDirective} from '../shared/directives/mask.directive';
+import {Base64Directive} from '../shared/directives/base64.directive';
+import {AutofocusDirective} from '../shared/directives/autofocus.directive';
 
-const DIRECTIVES = [IsActiveRouteDirective, LastDirective, HTMLParserDirective, VariableDirective, VideoSnapshotDirective];
+const DIRECTIVES = [
+  IsActiveRouteDirective,
+  LastDirective, HTMLParserDirective,
+  VariableDirective,
+  VideoSnapshotDirective,
+  MaskDirective,
+  Base64Directive,
+  AutofocusDirective
+];
 const SERVICES = [EndpointService, LoggerService, StateService, WatcherService];
 const PIPES = [FormatPipe, OrderPipe];
 

@@ -122,7 +122,6 @@ export class Util {
    * @param [clone=true] - If clone true default variable not effected
    * @returns any;
    */
-
   static clear(value: any, hard = false, clone = false) {
     const _this: any = clone ? JSON.parse(JSON.stringify(value)) : value;
     if (_this.constructor === Object && hard.constructor === Boolean) {
@@ -151,7 +150,6 @@ export class Util {
   static isNull(value: any) {
     return value.constructor === Object && Object.keys(value).length === 0;
   }
-
 
   static findRemoveUnique(array: any[]) {
     const filter = (item, pos) => {
@@ -212,5 +210,43 @@ export class Util {
 
   static version() {
     console.log('v1');
+  }
+
+  /**
+   * Find index of given value inside array
+   * Usage:
+   * @param array - source array
+   * @param value - variable will be find index
+   */
+  static findAllIndex(array: Array<any>, value: any) {
+    const method = (a: any, e: number, i: any) => {
+      if (e === value) {
+        a.push(i);
+      }
+      return a;
+    };
+    return array.reduce(method, []);
+  }
+
+  /**
+   * Remove character from given string with given count
+   * Usage: Util.removeChar('serkan', 3, 2);
+   * @param value - String value will be split
+   * @param start - start position, 0 (zero) is first char
+   * @param count - how much char will be get
+   */
+  static removeBetween(value: string, start: number, count = 1) {
+    const str = value.split('');
+    str.splice(start, count);
+    return str.join('');
+  }
+
+  /**
+   * Check given date is valid
+   * @param value - any value
+   */
+  static isDateValid(value: any) {
+    const date: any = new Date(value);
+    return date && Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date);
   }
 }
