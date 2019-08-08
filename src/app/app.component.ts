@@ -12,6 +12,8 @@ export class AppComponent {
   titleFromStorage = 'logo-ng-library';
   titleFromState = 'logo-ng-library';
   route: RouterLinkActive;
+  base64String = 'c2Vya2Fu'; // Base64 Directive
+  inputValue; // Mask Directive
 
   constructor(private languageService: LanguageService, private ss: StateService) {
     this.addLanguage();
@@ -39,6 +41,6 @@ export class AppComponent {
 
   isActiveRoute($event) {
     this.route = $event;
-    console.log('activeroute');
+    console.log('active-route');
   }
 }
