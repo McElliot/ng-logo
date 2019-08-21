@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
 import {CoreModule, STORAGE_TYPES} from '@logo/core';
-import {ExcelModule} from '../../projects/logo/excel/src/lib/excel.module';
+import {ExcelModule} from '@logo/excel';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
 const EXTERNAL_MODULES = [

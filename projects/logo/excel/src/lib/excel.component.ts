@@ -107,12 +107,12 @@ export interface ExcelSettingType {
   styles: []
 })
 export class ExcelComponent implements AfterViewInit {
-  @Input() columns: TableColumn[];
-  @Input() data: any[] = [];
-  @Input() status = true;
-  @Input() header: string[] = null;
-  @Input() name = `Export`;
-  @Input() service: RequestOptions<any> = {
+  @Input() public columns: TableColumn[];
+  @Input() public data: any[] = [];
+  @Input() public status = true;
+  @Input() public header: string[] = null;
+  @Input() public name = `Export`;
+  @Input() public service: RequestOptions<any> = {
     url: null,
     method: 'GET',
     body: [],
@@ -120,10 +120,10 @@ export class ExcelComponent implements AfterViewInit {
     withCredentials: true,
     params: new HttpParams()
   };
-  @Input() type = 'cvs';
-  @Output() complete: EventEmitter<any> = new EventEmitter();
-  @ViewChild('content') contentContainer: ElementRef;
-  private contentExist = false;
+  @Input() public type = 'cvs';
+  @Output() public complete: EventEmitter<any> = new EventEmitter();
+  @ViewChild('content') public contentContainer: ElementRef;
+  public contentExist = false;
 
   constructor(public elementRef: ElementRef, private http: HttpClient) {
   }
