@@ -133,208 +133,33 @@
         }
       }
     },
-    "captcha": {
-      "root": "projects/captcha",
-      "sourceRoot": "projects/captcha/src",
-      "projectType": "library",
-      "prefix": "",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/captcha/tsconfig.lib.json",
-            "project": "projects/captcha/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/captcha/src/test.ts",
-            "tsConfig": "projects/captcha/tsconfig.spec.json",
-            "karmaConfig": "projects/captcha/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/captcha/tsconfig.lib.json",
-              "projects/captcha/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "modal": {
-      "root": "projects/modal",
-      "sourceRoot": "projects/modal/src",
-      "projectType": "library",
-      "prefix": "",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/modal/tsconfig.lib.json",
-            "project": "projects/modal/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/modal/src/test.ts",
-            "tsConfig": "projects/modal/tsconfig.spec.json",
-            "karmaConfig": "projects/modal/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/modal/tsconfig.lib.json",
-              "projects/modal/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "core": {
-      "root": "projects/core",
-      "sourceRoot": "projects/core/src",
-      "projectType": "library",
-      "prefix": "",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/core/tsconfig.lib.json",
-            "project": "projects/core/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/core/src/test.ts",
-            "tsConfig": "projects/core/tsconfig.spec.json",
-            "karmaConfig": "projects/core/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/core/tsconfig.lib.json",
-              "projects/core/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "loading": {
-      "root": "projects/loading",
-      "sourceRoot": "projects/loading/src",
-      "projectType": "library",
-      "prefix": "",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/loading/tsconfig.lib.json",
-            "project": "projects/loading/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/loading/src/test.ts",
-            "tsConfig": "projects/loading/tsconfig.spec.json",
-            "karmaConfig": "projects/loading/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/loading/tsconfig.lib.json",
-              "projects/loading/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "@srknc/language": {
-      "root": "projects/srknc/language",
-      "sourceRoot": "projects/srknc/language/src",
+    "@logo/excel": {
+      "root": "projects/logo/excel",
+      "sourceRoot": "projects/logo/excel/src",
       "projectType": "library",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/srknc/language/tsconfig.lib.json",
-            "project": "projects/srknc/language/ng-package.json"
+            "tsConfig": "projects/logo/excel/tsconfig.lib.json",
+            "project": "projects/logo/excel/ng-package.json"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/srknc/language/src/test.ts",
-            "tsConfig": "projects/srknc/language/tsconfig.spec.json",
-            "karmaConfig": "projects/srknc/language/karma.conf.js"
+            "main": "projects/logo/excel/src/test.ts",
+            "tsConfig": "projects/logo/excel/tsconfig.spec.json",
+            "karmaConfig": "projects/logo/excel/karma.conf.js"
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": [
-              "projects/srknc/language/tsconfig.lib.json",
-              "projects/srknc/language/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
-        }
-      }
-    },
-    "@logo/language": {
-      "root": "projects/logo/language",
-      "sourceRoot": "projects/logo/language/src",
-      "projectType": "library",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
-          "options": {
-            "tsConfig": "projects/logo/language/tsconfig.lib.json",
-            "project": "projects/logo/language/ng-package.json"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/logo/language/src/test.ts",
-            "tsConfig": "projects/logo/language/tsconfig.spec.json",
-            "karmaConfig": "projects/logo/language/karma.conf.js"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/logo/language/tsconfig.lib.json",
-              "projects/logo/language/tsconfig.spec.json"
+              "projects/logo/excel/tsconfig.lib.json",
+              "projects/logo/excel/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

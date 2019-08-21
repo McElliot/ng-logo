@@ -1,20 +1,20 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ModalComponent} from './modal.component';
+import {ExcelComponent} from './excel.component';
 
-describe('ModalComponent', () => {
-  let component: ModalComponent;
-  let fixture: ComponentFixture<ModalComponent>;
+describe('ExcelComponent', () => {
+  let component: ExcelComponent;
+  let fixture: ComponentFixture<ExcelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ModalComponent]
+      declarations: [ExcelComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ModalComponent);
+    fixture = TestBed.createComponent(ExcelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

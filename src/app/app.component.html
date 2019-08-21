@@ -1,37 +1,9 @@
-<h1>Set Language</h1>
-<div>{{'login-info' | translate}}</div>
-<button (click)="setLanguage('tr')">tr</button>
-<button (click)="setLanguage('en')">en</button>
-<button (click)="setLanguage('ro')">ro</button>
-
-<h1>Set State</h1>
-<div>{{titleFromState}}</div>
-
-<h1>Set Storage</h1>
-<div>{{titleFromStorage}}</div>
-
-<h1>isActiveRoute directive</h1>
-<a
-  [routerLink]="[]"
-  routerLinkActive="accordion-active"
-  #reference="routerLinkActive"
-  (isActiveRouteEmitter)="isActiveRoute($event)"
-  [isActiveRoute]="reference"
+<h1>Excel</h1>
+<excel
+  (complete)="excelComplete()"
+  [columns]="excelSample.column"
+  [data]="excelSample.data"
+  [header]="excelSample.header"
+  [name]="excelSample.fileName"
 >
-  name
-</a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
-
-<h1>Base64 Automatically Encode/Decode</h1>
-<span [(b64)]="base64String">{{base64String}}</span>
-
-<h1>Mask Input</h1>
-<input
-  #dateRef
-  [case]="'upper'"
-  [conditions]="[{cases: [{position: 2, regexp:'^[0-9]$'}], placeholder: 'X-0000000000'}]"
-  [maskType]="'date'"
-  [placeholder]="'XX-00000'"
-  [regexp]="'^[X]{1,2}$|^[X]{1,2}[0-9]*$'"
-  masker
-/>
-<router-outlet></router-outlet>
+</excel>
