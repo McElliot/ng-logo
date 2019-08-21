@@ -77,6 +77,6 @@ export class AppComponent {
   }
 
   excelComplete() {
-    console.log('completed');
+    console.log('excel export completed');
   }
 }
