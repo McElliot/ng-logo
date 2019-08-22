@@ -39,5 +39,6 @@ testem.log
 Thumbs.db
 
 
-#LanguageModule
+#libraries
 .git-*
+node_modules
