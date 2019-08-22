@@ -3,6 +3,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
+
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
 import {CoreModule, STORAGE_TYPES} from '@logo/core';
 import {ExcelModule} from '@logo/excel';

@@ -43,12 +43,6 @@
       "loading/*": [
         "dist/loading/*"
       ],
-      "@srknc/language": [
-        "dist/srknc/language"
-      ],
-      "@srknc/language/*": [
-        "dist/srknc/language/*"
-      ],
       "@logo/language": [
         "dist/logo/language"
       ],
