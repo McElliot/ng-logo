@@ -13,14 +13,14 @@ import {Directive, Input, TemplateRef, ViewContainerRef} from '@angular/core';
   selector: '[appVar]',
 })
 export class VariableDirective {
-  @Input() set appVar(context: any) {
-    this.context.$implicit = this.context.appVar = context;
-    this.updateView();
-  }
-
   context: any = {};
 
   constructor(private vcRef: ViewContainerRef, private templateRef: TemplateRef<any>) {
+  }
+
+  @Input() set appVar(context: any) {
+    this.context.$implicit = this.context.appVar = context;
+    this.updateView();
   }
 
   updateView() {

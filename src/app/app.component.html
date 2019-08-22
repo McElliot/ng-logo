@@ -12,11 +12,11 @@
 
 <h1>isActiveRoute directive</h1>
 <a
-  [routerLink]="[]"
-  routerLinkActive="accordion-active"
   #reference="routerLinkActive"
   (isActiveRouteEmitter)="isActiveRoute($event)"
   [isActiveRoute]="reference"
+  [routerLink]="[]"
+  routerLinkActive="accordion-active"
 >
   name
 </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
