@@ -54,6 +54,12 @@
       ],
       "@logo/language/*": [
         "dist/logo/language/*"
+      ],
+      "@logo/core": [
+        "dist/logo/core"
+      ],
+      "@logo/core/*": [
+        "dist/logo/core/*"
       ]
     }
   }
