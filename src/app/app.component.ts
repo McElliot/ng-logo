@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {LanguageService} from '@srknc/language';
+import {LanguageService} from '@logo/language';
 
 @Component({
   selector: 'lbs-root',
