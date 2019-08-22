@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Using `ng g library NameOfLibrary(@logo/excel)` command can create a new library on the console screen.
 
 ## Pre Publishing Library
-Sometimes, some repositories need other dependencies like `moment`. Before publishing this kind of repositories must set `whitelistedNonPeerDependencies` properties of `ng-package.json` file at the root of the library. For example:
+Some repositories need other dependencies like `moment`. Before publishing this kind of repositories must be added `whitelistedNonPeerDependencies` properties of `ng-package.json` file at the root of the library. For example:
 
 ````json
 {
