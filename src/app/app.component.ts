@@ -13,10 +13,20 @@ export class AppComponent {
   titleFromState = 'logo-ng-library';
   route: RouterLinkActive;
   base64String = 'c2Vya2Fu'; // Base64 Directive
+  inputValue; // Mask Directive
 
   constructor(private languageService: LanguageService, private ss: StateService) {
+    this.addLanguage();
     this.setState();
     this.setStorage();
+  }
+
+  setLanguage(lang: string = 'tr') {
+    this.languageService.setLanguage(lang);
+  }
+
+  addLanguage() {
+    this.languageService.addLanguage({abbr: 'ro', code: 'ro-RO', display: 'Romain'});
   }
 
   setState() {

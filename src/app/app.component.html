@@ -1,3 +1,9 @@
+<h1>Set Language</h1>
+<div>{{'login-info' | translate}}</div>
+<button (click)="setLanguage('tr')">tr</button>
+<button (click)="setLanguage('en')">en</button>
+<button (click)="setLanguage('ro')">ro</button>
+
 <h1>Set State</h1>
 <div>{{titleFromState}}</div>
 
@@ -9,8 +15,8 @@
   [routerLink]="[]"
   routerLinkActive="accordion-active"
   #reference="routerLinkActive"
-  [isActiveRoute]="reference"
   (isActiveRouteEmitter)="isActiveRoute($event)"
+  [isActiveRoute]="reference"
 >
   name
 </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
