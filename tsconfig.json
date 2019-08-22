@@ -48,6 +48,12 @@
       ],
       "@logo/language/*": [
         "dist/logo/language/*"
+      ],
+      "@logo/excel": [
+        "dist/logo/excel"
+      ],
+      "@logo/excel/*": [
+        "dist/logo/excel/*"
       ]
     }
   }

@@ -14,6 +14,38 @@ export class AppComponent {
   route: RouterLinkActive;
   base64String = 'c2Vya2Fu'; // Base64 Directive
   inputValue; // Mask Directive
+  excelSample = {
+    fileName: 'ExcelFile',
+    header: ['CODE', 'ADDRESS', 'NAME', 'SURNAME'],
+    column: [
+      {
+        display: 'ID',
+        variable: 'id',
+        hidden: true
+      },
+      {
+        display: 'Code',
+        variable: 'code',
+      },
+      {
+        display: 'Address',
+        variable: 'recipient.address',
+      },
+      {
+        display: 'Name',
+        variable: 'user.name',
+      },
+      {
+        display: 'Surname',
+        variable: 'user.surname',
+      }
+    ],
+    data: [
+      {id: 1, code: 123213, recipient: {address: 'Doğruluk sok. 8/10 Ankara'}, user: {name: 'Serkan', surname: 'Konakcı'}},
+      {id: 2, code: 2134, recipient: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
+      {id: 3, code: 456456, recipient: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
+    ]
+  };
 
   constructor(private languageService: LanguageService, private ss: StateService) {
     this.addLanguage();
@@ -42,5 +74,9 @@ export class AppComponent {
   isActiveRoute($event) {
     this.route = $event;
     console.log('active-route');
+  }
+
+  excelComplete() {
+    console.log('excel export completed');
   }
 }

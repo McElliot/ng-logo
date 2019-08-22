@@ -34,4 +34,15 @@
   [regexp]="'^[X]{1,2}$|^[X]{1,2}[0-9]*$'"
   masker
 />
+
+<h1>Excel</h1>
+<excel
+  (complete)="excelComplete()"
+  [columns]="excelSample.column"
+  [data]="excelSample.data"
+  [header]="excelSample.header"
+  [name]="excelSample.fileName"
+>
+</excel>
+
 <router-outlet></router-outlet>
