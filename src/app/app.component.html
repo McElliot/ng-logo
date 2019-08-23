@@ -45,4 +45,12 @@
 >
 </excel>
 
+<app-paging
+  (paging)="pagingModule.onPageChangeHandler($event)"
+  *ngIf="true"
+  [pageSize]="10"
+  [totalCount]="420"
+  [totalPages]="3">
+</app-paging>
+
 <router-outlet></router-outlet>

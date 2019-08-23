@@ -45,7 +45,8 @@ export class AppComponent {
       {id: 2, code: 2134, recipient: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
       {id: 3, code: 456456, recipient: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
     ]
-  };
+  }; // Excel Module
+  pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
 
   constructor(private languageService: LanguageService, private ss: StateService) {
     this.addLanguage();

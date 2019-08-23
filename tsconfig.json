@@ -54,6 +54,12 @@
       ],
       "@logo/excel/*": [
         "dist/logo/excel/*"
+      ],
+      "@logo/paging": [
+        "dist/logo/paging"
+      ],
+      "@logo/paging/*": [
+        "dist/logo/paging/*"
       ]
     }
   }
