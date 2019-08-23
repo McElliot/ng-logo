@@ -242,6 +242,78 @@ export class Util {
   }
 
   /**
+   * Add char string to specified position
+   * @param data: string - Given string data will be replaced
+   * @param value - Given string  data will be added
+   * @param index - The start position of the inserted a new string
+   */
+  static addBetween(data, value, index) {
+    const str = data.split('');
+    str[index] = value;
+    return str.join('');
+  }
+
+  /**
+   * Extract pre-defined keys from objects list, with ordering options
+   * @param data - Object source
+   * @param keys - Which properties will be exported
+   *
+   * Usage:
+   * let data, keys;
+   * data = [{ s: 144, b: 2, c: 3 }, { s: 10, b: 20, c: 30 }, { s: 21, b: 22, c: 23 }];
+   * keys = [ "b", "c" ];
+   *
+   * const {s,b,c} = Util.extract(data,keys);
+   * console.log(s); // [144, 10, 21]
+   */
+  static extract(data, keys) {
+    const result = {};
+    keys.map((prop, propKey) => {
+      result[prop] = (data.map((item, itemKey) => {
+        return item[prop];
+      }));
+    });
+    return result;
+  }
+
+  /**
+   * Creates the number of items requested from the defined starting number.
+   * @param start - which number will be started
+   * @param count - how many items will be added
+   * @returns Array<number>;
+   *
+   * Usage:
+   * Util.range(13, 4); // result: [13, 14, 15, 16]
+   */
+  static range(start = 0, count = 0): Array<number> {
+    return [...Array(count)].map((u, i) => start + i);
+  }
+
+  /**
+   * Convert dot separated string to object then assign the value to latest key
+   * @param prop: string - Object property paths
+   * @param value: any - The value will assign the path.
+   * @returns Object;
+   *
+   * @Usage
+   * Util.make("a.b.c", 'some value');  will return {a: {b: {c: 'some value'}}};
+   */
+  static make(prop: string, value: any): Object {
+    const props = prop.split('.');
+    let temp = {};
+    props.reverse().forEach(function (key, index) {
+      if (index === 0) {
+        temp[key] = value || null;
+      } else {
+        const hold = temp;
+        temp = {};
+        temp[key] = hold;
+      }
+    });
+    return temp;
+  }
+
+  /**
    * Check given date is valid
    * @param value - any value
    */
