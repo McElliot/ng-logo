@@ -15,12 +15,12 @@ export interface Pager {
   totalItems?: number;
   currentPage?: number;
   pageSize?: number;
-  totalPages?: number;
   startPage?: number;
   endPage?: number;
   startIndex?: number;
   endIndex?: number;
   pages?: number[];
+  totalPages?: number;
 }
 
 @Component({
@@ -31,12 +31,13 @@ export interface Pager {
 export class PagingComponent implements OnChanges {
   @Input() totalCount: number;
   @Input() pageSize = 10;
-  @Input() totalPages: number;
   @HostBinding('class.app-paging') classes = true;
   @Output() paging = new EventEmitter();
   public pager: Pager = {};
+  public totalPages: number;
 
   ngOnChanges(changes: SimpleChanges) {
+    this.totalPages = Math.ceil(this.totalCount / this.pageSize);
     this.pager = this.getPager(this.totalCount, 1, this.pageSize);
   }
 
