@@ -1,4 +1,4 @@
-<h1>Set Language</h1>
+<h1>Language Module</h1>
 <div>{{'login-info' | translate}}</div>
 <button (click)="setLanguage('tr')">tr</button>
 <button (click)="setLanguage('en')">en</button>
@@ -10,7 +10,7 @@
 <h1>Set Storage</h1>
 <div>{{titleFromStorage}}</div>
 
-<h1>isActiveRoute directive</h1>
+<h1>isActiveRoute Directive</h1>
 <a
   #reference="routerLinkActive"
   (isActiveRouteEmitter)="isActiveRoute($event)"
@@ -21,10 +21,10 @@
   name
 </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
 
-<h1>Base64 Automatically Encode/Decode</h1>
+<h1>Base64 Automatically Encode/Decode Directive</h1>
 <span [(b64)]="base64String">{{base64String}}</span>
 
-<h1>Mask Input</h1>
+<h1>Mask Input Directive</h1>
 <input
   #dateRef
   [case]="'upper'"
@@ -35,7 +35,7 @@
   masker
 />
 
-<h1>Excel</h1>
+<h1>Excel Module</h1>
 <excel
   (complete)="excelComplete()"
   [columns]="excelSample.column"
@@ -45,12 +45,13 @@
 >
 </excel>
 
+<h1>Paging Module</h1>
 <app-paging
   (paging)="pagingModule.onPageChangeHandler($event)"
   *ngIf="true"
-  [pageSize]="10"
-  [totalCount]="420"
-  [totalPages]="3">
+  [pageSize]="4"
+  [totalCount]="4"
+>
 </app-paging>
 
 <router-outlet></router-outlet>
