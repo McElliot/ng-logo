@@ -1,0 +1,9 @@
+{
+  "name": "@logo/paging",
+  "version": "0.0.1",
+  "peerDependencies": {
+    "@angular/common": "^7.0.0",
+    "@angular/core": "^7.0.0",
+    "@logo/language": "^0.0.1"
+  }
+}
