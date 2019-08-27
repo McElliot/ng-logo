@@ -42,6 +42,8 @@ $paging-link-color: #303e4d;
     }
 
     .page-numbers {
+      justify-content: flex-end;
+
       .pagination {
         text-align: right;
         list-style: none;
