@@ -1,3 +1,13 @@
+/**
+ * @license
+ * Copyright LOGO YAZILIM SANAYİ VE TİCARET A.Ş. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of LOGO YAZILIM SANAYİ VE TİCARET A.Ş. Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import * as FileSaver from 'file-saver';
@@ -61,7 +71,7 @@ import {Util} from '@logo/core';
  * };
  */
 
-export class TableColumn {
+export class ExcelTableColumn {
   display: string;
   variable: string;
   hidden?: boolean;
@@ -88,7 +98,7 @@ export interface ExcelSettingType {
   service: RequestOptions<any>;
   status?: Boolean;
   data?: any[];
-  columns?: TableColumn[];
+  columns?: ExcelTableColumn[];
   header?: any[] | null;
   name?: string;
   type?: string;
@@ -97,17 +107,17 @@ export interface ExcelSettingType {
 @Component({
   selector: 'excel',
   template: `
-    <div (click)="download()">
-      <div #content>
-        <ng-content></ng-content>
+      <div (click)="download()">
+          <div #content>
+              <ng-content></ng-content>
+          </div>
+          <button *ngIf="!contentExist">Excel</button>
       </div>
-      <button *ngIf="!contentExist">Excel</button>
-    </div>
   `,
   styles: []
 })
 export class ExcelComponent implements AfterViewInit {
-  @Input() public columns: TableColumn[];
+  @Input() public columns: ExcelTableColumn[];
   @Input() public data: any[] = [];
   @Input() public status = true;
   @Input() public header: string[] = null;
@@ -163,7 +173,7 @@ export class ExcelComponent implements AfterViewInit {
       const push: any = {};
       this.columns.forEach((column: any) => {
         if (!column.hidden) {
-          push[column.display] = Util.get(item, column.variable);
+          push[column.display] = Util.getObjectPathValue(item, column.variable);
         }
       });
       return push;
@@ -173,7 +183,7 @@ export class ExcelComponent implements AfterViewInit {
   cvsDataMaintenance(data: any) {
     return data.map((item: any) => {
       return this.columns.map((column: any) => {
-        return Util.get(item, column.variable);
+        return Util.getObjectPathValue(item, column.variable);
       });
     });
   }
