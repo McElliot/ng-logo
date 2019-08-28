@@ -101,7 +101,8 @@ export class Util {
    * Util.range(13, 4); // result: [13, 14, 15, 16]
    */
   static range(start = 0, count = 0): Array<number> {
-    return [...Array(count)].map((u, i) => start + i);
+    const boost = (u, i) => start + i;
+    return [...Array(count)].map(boost);
   }
 
   /**
