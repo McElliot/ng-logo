@@ -34,4 +34,24 @@
   [regexp]="'^[X]{1,2}$|^[X]{1,2}[0-9]*$'"
   masker
 />
+
+<h1>Excel Module</h1>
+<excel
+  (complete)="excelComplete()"
+  [columns]="excelSample.column"
+  [data]="excelSample.data"
+  [header]="excelSample.header"
+  [name]="excelSample.fileName"
+>
+</excel>
+
+<h1>Paging Module</h1>
+<app-paging
+  (paging)="pagingModule.onPageChangeHandler($event)"
+  *ngIf="true"
+  [pageSize]="4"
+  [totalCount]="14"
+>
+</app-paging>
+
 <router-outlet></router-outlet>

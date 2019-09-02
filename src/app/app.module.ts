@@ -5,12 +5,17 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
 import {CoreModule, STORAGE_TYPES} from '@logo/core';
+import {ExcelModule} from '@logo/excel';
+import {PagingModule} from '@logo/paging';
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
 const EXTERNAL_MODULES = [
   LanguageModule.forRoot(languageConf),
-  CoreModule.forRoot(STORAGE_TYPES.SESSION)
+  LanguageModule.forChild(languageConf),
+  CoreModule.forRoot(STORAGE_TYPES.SESSION),
+  ExcelModule,
+  PagingModule
 ];
 
 @NgModule({
