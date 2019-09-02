@@ -35,7 +35,7 @@
   masker
 />
 
-<h1>Excel</h1>
+<h1>Excel Module</h1>
 <excel
   (complete)="excelComplete()"
   [columns]="excelSample.column"
@@ -44,5 +44,14 @@
   [name]="excelSample.fileName"
 >
 </excel>
+
+<h1>Paging Module</h1>
+<app-paging
+  (paging)="pagingModule.onPageChangeHandler($event)"
+  *ngIf="true"
+  [pageSize]="4"
+  [totalCount]="14"
+>
+</app-paging>
 
 <router-outlet></router-outlet>

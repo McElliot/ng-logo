@@ -4,7 +4,7 @@
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0",
-    "@logo/core": "0.0.4"
+    "@logo/core": "^0.0.4"
   },
   "dependencies": {
     "file-saver": "^2.0.2",

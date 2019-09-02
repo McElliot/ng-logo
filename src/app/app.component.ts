@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'lbs-root',
@@ -45,9 +46,10 @@ export class AppComponent {
       {id: 2, code: 2134, recipient: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
       {id: 3, code: 456456, recipient: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
     ]
-  };
+  }; // Excel Module
+  pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
 
-  constructor(private languageService: LanguageService, private ss: StateService) {
+  constructor(private titleService: Title, private languageService: LanguageService, private stateService: StateService) {
     this.addLanguage();
     this.setState();
     this.setStorage();
@@ -62,13 +64,15 @@ export class AppComponent {
   }
 
   setState() {
-    this.ss.set('titleFromState', 'titleFromState is set here');
-    this.titleFromState = this.ss.get('titleFromState');
+    this.stateService.set('titleFromState', 'titleFromState is set here');
+    this.titleFromState = this.stateService.get('titleFromState');
+    this.titleService.setTitle(this.titleFromState);
   }
 
   setStorage() {
     StorageClass.setItem('titleFromStorage', 'titleFromStorage is set here');
     this.titleFromStorage = StorageClass.getItem('titleFromStorage');
+    this.titleService.setTitle(this.titleFromStorage);
   }
 
   isActiveRoute($event) {
