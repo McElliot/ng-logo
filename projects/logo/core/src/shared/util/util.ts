@@ -1,3 +1,13 @@
+/**
+ * @license
+ * Copyright LOGO YAZILIM SANAYİ VE TİCARET A.Ş. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of LOGO YAZILIM SANAYİ VE TİCARET A.Ş. Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+
 export class Util {
 
   /**
@@ -29,24 +39,6 @@ export class Util {
   }
 
   /**
-   * Get value by given path of object
-   * @example
-   * var m = {a: {b:1, c: {d: {e: [1,2,3]}}}}
-   * Util.get(m, "a.c.d.e") // result is (3) [1, 2, 3]
-   * @param value - The object from which to import data
-   * @param path - String path of the target property
-   */
-  static get(value: any, path: string) {
-    let data = value;
-    if (!!path && path.constructor === String) {
-      path.split('.').forEach(function (val: any) {
-        data = (data !== null && typeof data !== 'undefined') ? data[val] : null;
-      });
-    }
-    return data;
-  }
-
-  /**
    * This method returns Object type
    * @param value - The target data from which will learn the type.
    */
@@ -56,54 +48,10 @@ export class Util {
   }
 
   /**
-   * Compare two multidimensional objects, check one of them is contains other.
-   * @example
-   * var one = {a:1, b:2, c: {d:1, e:2}};
-   * var two = {b: 2, c: {d:1}}
-   * one.contains(two); // return false -> it includes two
-   * @param value - The target object
-   * @param filter - The object which will be looking for
-   * @param exact - I can't remember why I add this feature
-   * @param debug - If it is true, will generate output to the console
-   */
-  static contains(value: any, filter: any, exact = true, debug = false) {
-    const method = key => {
-      let nValue = value[key];
-      let nFilter = filter[key];
-      if (nFilter !== null && typeof nFilter !== 'undefined' && Util.type(nFilter) !== 'Object' &&
-        nValue !== null && typeof nValue !== 'undefined' && Util.type(nValue) !== 'Object') {
-        if (Util.type(nFilter) === 'Array') {
-          return !Util.contains(nFilter, exact);
-        } else if (exact) {
-          return !(nValue === nFilter);
-        } else {
-          nFilter = nFilter.constructor.name === 'String' ? Util.turkishToLower(nFilter) : nFilter;
-          nValue = nValue.constructor.name === 'String' ? Util.turkishToLower(nValue) : nValue;
-          if (!new RegExp(nFilter, 'gi').test(nValue) && debug) {
-            console.log('false: ', nValue, nFilter);
-          }
-          return !new RegExp(nFilter, 'gi').test(nValue);
-        }
-      } else {
-        if (nValue !== null && typeof nValue !== 'undefined' && Util.type(nValue) === 'Object' &&
-          nFilter !== null && typeof nFilter !== 'undefined' && Util.type(nFilter) === 'Object') {
-          return !Util.contains(nValue, nFilter, exact);
-        } else {
-          if (nValue !== nFilter && debug) {
-            console.log('false: ', key, nValue, nFilter);
-          }
-          return !(nValue === nFilter);
-        }
-      }
-    };
-    return !Object.keys(filter).some(method);
-  }
-
-  /**
    * Copy any text to clipboard
    * @param text - The text which will be copied
    */
-  static copy(text: any) {
+  static copyToClipboard(text: any) {
     const tempInput = document.createElement('input');
     document.body.appendChild(tempInput);
     tempInput.value = text || (<any>event).target.innerText;
@@ -122,17 +70,17 @@ export class Util {
    * @param [clone=true] - If clone true default variable not effected
    * @returns any;
    */
-  static clear(value: any, hard = false, clone = false) {
+  static clearNullAndUndefined(value: any, hard = false, clone = false) {
     const _this: any = clone ? JSON.parse(JSON.stringify(value)) : value;
     if (_this.constructor === Object && hard.constructor === Boolean) {
       Object.keys(_this).forEach((key) => {
         if (_this.hasOwnProperty(key)) {
           const nValue = _this[key];
           if (nValue !== null && nValue.constructor === Object) {
-            Util.clear(nValue, hard);
+            Util.clearNullAndUndefined(nValue, hard);
           }
           if (nValue === null ||
-            (hard && nValue.constructor === Object && Util.isNull(nValue)) ||
+            (hard && nValue.constructor === Object && Util.isObjectNull(nValue)) ||
             (hard && (nValue.constructor === String || nValue.constructor === Array) && nValue.length === 0)
           ) {
             delete _this[key];
@@ -144,18 +92,29 @@ export class Util {
   }
 
   /**
-   * Object is null check
-   * @returns Boolean
+   * Creates the number of items requested from the defined starting number.
+   * @param start - which number will be started
+   * @param count - how many items will be added
+   * @returns Array<number>;
+   *
+   * Usage:
+   * Util.range(13, 4); // result: [13, 14, 15, 16]
    */
-  static isNull(value: any) {
-    return value.constructor === Object && Object.keys(value).length === 0;
+  static range(start = 0, count = 0): Array<number> {
+    const boost = (u, i) => start + i;
+    return [...Array(count)].map(boost);
   }
 
-  static findRemoveUnique(array: any[]) {
+  /**
+   * Creates an array of unique values
+   * @param array - The arrays to inspect
+   */
+  static union(...array) {
+    const newFlatArray: any[] = [...array].flat(Infinity);
     const filter = (item, pos) => {
-      return array.indexOf(item) === pos;
+      return newFlatArray.indexOf(item) === pos;
     };
-    return array.filter(filter);
+    return newFlatArray.filter(filter);
   }
 
   /**
@@ -175,6 +134,14 @@ export class Util {
    */
   static isObject(value) {
     return value !== null && Object.prototype.toString.call(value) === '[object Object]';
+  }
+
+  /**
+   * Object is null check
+   * @returns Boolean
+   */
+  static isObjectNull(value: any) {
+    return value.constructor === Object && Object.keys(value).length === 0;
   }
 
   /**
@@ -208,17 +175,14 @@ export class Util {
     return source;
   }
 
-  static version() {
-    console.log('v1');
-  }
-
   /**
    * Find index of given value inside array
    * Usage:
    * @param array - source array
    * @param value - variable will be find index
+   * @returns - Array<number>
    */
-  static findAllIndex(array: Array<any>, value: any) {
+  static findAllIndex(array: Array<any>, value: any): Array<number> {
     const method = (a: any, e: number, i: any) => {
       if (e === value) {
         a.push(i);
@@ -230,12 +194,12 @@ export class Util {
 
   /**
    * Remove character from given string with given count
-   * Usage: Util.removeChar('serkan', 3, 2);
+   * Usage: Util.removeCharsBetween('serkan', 3, 2);
    * @param value - String value will be split
    * @param start - start position, 0 (zero) is first char
    * @param count - how much char will be get
    */
-  static removeBetween(value: string, start: number, count = 1) {
+  static removeCharsBetween(value: string, start: number, count = 1) {
     const str = value.split('');
     str.splice(start, count);
     return str.join('');
@@ -247,46 +211,28 @@ export class Util {
    * @param value - Given string  data will be added
    * @param index - The start position of the inserted a new string
    */
-  static addBetween(data, value, index) {
+  static addCharsBetween(data, value, index) {
     const str = data.split('');
     str[index] = value;
     return str.join('');
   }
 
   /**
-   * Extract pre-defined keys from objects list, with ordering options
-   * @param data - Object source
-   * @param keys - Which properties will be exported
-   *
-   * Usage:
-   * let data, keys;
-   * data = [{ s: 144, b: 2, c: 3 }, { s: 10, b: 20, c: 30 }, { s: 21, b: 22, c: 23 }];
-   * keys = [ "b", "c" ];
-   *
-   * const {s,b,c} = Util.extract(data,keys);
-   * console.log(s); // [144, 10, 21]
+   * Get value by given path of object
+   * @example
+   * var m = {a: {b:1, c: {d: {e: [1,2,3]}}}}
+   * Util.getObjectPathValue(m, "a.c.d.e") // result is (3) [1, 2, 3]
+   * @param value - The object from which to import data
+   * @param path - String path of the target property
    */
-  static extract(data, keys) {
-    const result = {};
-    keys.map((prop, propKey) => {
-      result[prop] = (data.map((item, itemKey) => {
-        return item[prop];
-      }));
-    });
-    return result;
-  }
-
-  /**
-   * Creates the number of items requested from the defined starting number.
-   * @param start - which number will be started
-   * @param count - how many items will be added
-   * @returns Array<number>;
-   *
-   * Usage:
-   * Util.range(13, 4); // result: [13, 14, 15, 16]
-   */
-  static range(start = 0, count = 0): Array<number> {
-    return [...Array(count)].map((u, i) => start + i);
+  static getObjectPathValue(value: any, path: string) {
+    let data = value;
+    if (!!path && path.constructor === String) {
+      path.split('.').forEach(function (val: any) {
+        data = (data !== null && typeof data !== 'undefined') ? data[val] : null;
+      });
+    }
+    return data;
   }
 
   /**
@@ -298,7 +244,7 @@ export class Util {
    * @Usage
    * Util.make("a.b.c", 'some value');  will return {a: {b: {c: 'some value'}}};
    */
-  static make(prop: string, value: any): Object {
+  static setObjectPathValue(prop: string, value: any): Object {
     const props = prop.split('.');
     let temp = {};
     props.reverse().forEach(function (key, index) {
@@ -314,11 +260,83 @@ export class Util {
   }
 
   /**
+   * Extract pre-defined keys from objects list, with ordering options
+   * @param data - Object source
+   * @param keys - Which properties will be exported
+   * @returns Object - Exports given array keys as an object with values. // result: {s: [144, 10, 21], c:[3, 30, 23]}
+   *
+   * Usage:
+   * let data, keys;
+   * data = [{ s: 144, b: 2, c: 3 }, { s: 10, b: 20, c: 30 }, { s: 21, b: 22, c: 23 }];
+   * keys = [ "s", "c"];
+   *
+   * const {s,c} = Util.objectKeysValues(data,keys);
+   * console.log(s); // [144, 10, 21]
+   */
+  static getObjectKeysValues(data, keys): Object {
+    const result = {};
+    keys.map((prop, propKey) => {
+      result[prop] = (data.map((item, itemKey) => {
+        return item[prop];
+      }));
+    });
+    return result;
+  }
+
+  /**
+   * Compare two multidimensional objects, check one of them is contains other.
+   * @example
+   * var one = {a:1, b:2, c: {d:1, e:2}};
+   * var two = {b: 2, c: {d:1}}
+   * one.isContained(two); // return false -> it includes two
+   * @param value - The target object
+   * @param filter - The object which will be looking for
+   * @param exact - I can't remember why I add this feature
+   * @param debug - If it is true, will generate output for debugging to the console
+   */
+  static isContained(value: Object, filter: Object, exact = true, debug = false): boolean {
+    const method = key => {
+      let nValue = value[key];
+      let nFilter = filter[key];
+      if (nFilter !== null && typeof nFilter !== 'undefined' && Util.type(nFilter) !== 'Object' &&
+        nValue !== null && typeof nValue !== 'undefined' && Util.type(nValue) !== 'Object') {
+        if (Util.type(nFilter) === 'Array') {
+          return !Util.isContained(nFilter, exact);
+        } else if (exact) {
+          return !(nValue === nFilter);
+        } else {
+          nFilter = nFilter.constructor.name === 'String' ? Util.turkishToLower(nFilter) : nFilter;
+          nValue = nValue.constructor.name === 'String' ? Util.turkishToLower(nValue) : nValue;
+          if (!new RegExp(nFilter, 'gi').test(nValue) && debug) {
+            console.log('false: ', nValue, nFilter);
+          }
+          return !new RegExp(nFilter, 'gi').test(nValue);
+        }
+      } else {
+        if (nValue !== null && typeof nValue !== 'undefined' && Util.type(nValue) === 'Object' &&
+          nFilter !== null && typeof nFilter !== 'undefined' && Util.type(nFilter) === 'Object') {
+          return !Util.isContained(nValue, nFilter, exact);
+        } else {
+          if (nValue !== nFilter && debug) {
+            console.log('false: ', key, nValue, nFilter);
+          }
+          return !(nValue === nFilter);
+        }
+      }
+    };
+    return !Object.keys(filter).some(method);
+  }
+
+  /**
    * Check given date is valid
    * @param value - any value
    */
-  static isDateValid(value: any) {
+  static isDateValid(value: any): boolean {
     const date: any = new Date(value);
     return date && Object.prototype.toString.call(date) === '[object Date]' && !isNaN(date);
+  }
+
+  static version() {
+    console.log('v2');
   }
 }

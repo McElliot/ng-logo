@@ -1,3 +1,13 @@
+/**
+ * @license
+ * Copyright LOGO YAZILIM SANAYİ VE TİCARET A.Ş. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of LOGO YAZILIM SANAYİ VE TİCARET A.Ş. Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+
 import {Directive, ElementRef, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {NgModel} from '@angular/forms';
 
@@ -153,7 +163,7 @@ export class MaskDirective implements OnInit {
     let specialChars: RegExpMatchArray | null;
     this.acceptedChars = `[${this.defaultChars}${this._extendedChars}]`;
     specialChars = placeholder.match(new RegExp(this.acceptedChars, 'g'));
-    this.list = specialChars && Util.findRemoveUnique(specialChars).map((value: any) => {
+    this.list = specialChars && Util.union(specialChars).map((value: any) => {
       'use strict';
       return {what: value, position: Util.findAllIndex(placeholder.split(''), value)};
     });
@@ -255,7 +265,7 @@ export class MaskDirective implements OnInit {
     const insertedCharLength = this.input.selectionEnd - selectionStart;
     if (!isTrue) {
       $event.preventDefault();
-      this.emit(Util.removeBetween(value, selectionStart, insertedCharLength));
+      this.emit(Util.removeCharsBetween(value, selectionStart, insertedCharLength));
       this.input.setSelectionRange(selectionStart, selectionStart);
       return;
     }
