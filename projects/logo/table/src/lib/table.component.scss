@@ -1,0 +1,117 @@
+/**
+ * @license
+ * Copyright HepsiExpress Limited. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of HepsiExpress Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+@import "table.config";
+
+:host {
+  @import "./directives/sticky.directive";
+  display: block;
+
+  .container {
+    display: none;
+  }
+
+  .table {
+    font-size: 12px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background-color: #ffffff;
+
+    th, td {
+      text-align: left;
+      font-weight: 400;
+      padding: 10px;
+    }
+
+    th {
+      background-color: $table-background-color;
+      border-right: 1px solid darken($table-background-color, 3);
+      font-size: 14px;
+      color: $color;
+      cursor: pointer;
+      white-space: nowrap;
+
+      &.sort-asc {
+        &::before {
+          content: "\f0d7";
+          display: inline-block;
+          // TODO @include animate();
+        }
+      }
+
+      &.sort-desc {
+        &::before {
+          content: "\f0d7";
+          display: inline-block;
+          // TODO @include rotate(180deg);
+          // TODO @include animate();
+        }
+      }
+    }
+
+    th.filter {
+      background-color: lighten($table-background-color, 5);
+      border-right: 1px solid $table-background-color;
+      line-height: 100%;
+      text-align: center;
+      height: 20px;
+
+      input {
+        border: none;
+        padding: 0;
+        width: 100%;
+        text-indent: 5px;
+        font-size: 10px;
+        line-height: 20px;
+        height: auto;
+      }
+
+      input:disabled {
+        opacity: 0.4;
+      }
+    }
+
+    tr {
+      &:hover {
+        background: rgba($table-background-color, 0.1);
+      }
+    }
+
+    td {
+      border-bottom: 1px solid $table-border-color;
+      line-height: 20px;
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr.selected {
+      td {
+        background: rgba($table-background-color, 0.4);
+      }
+    }
+
+    .no-data {
+      text-align: center;
+    }
+  }
+
+  .table-actions {
+    padding-top: 20px;
+
+    button {
+      margin-right: 10px;
+    }
+  }
+
+}

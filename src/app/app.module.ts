@@ -8,6 +8,7 @@ import {CoreModule, STORAGE_TYPES} from '@logo/core';
 import {ExcelModule} from '@logo/excel';
 import {PagingModule} from '@logo/paging';
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
+import {TableModule} from '../../projects/logo/table/src/lib/table.module';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
 const EXTERNAL_MODULES = [
@@ -15,7 +16,8 @@ const EXTERNAL_MODULES = [
   LanguageModule.forChild(languageConf),
   CoreModule.forRoot(STORAGE_TYPES.SESSION),
   ExcelModule,
-  PagingModule
+  PagingModule,
+  TableModule
 ];
 
 @NgModule({
