@@ -110,8 +110,8 @@
 
 <!--*ngIf="!reference && hasPaging && paging.totalCount > 0"-->
 <app-paging
-  (paging)="onPageChangeHandler($event)"
   *ngIf="hasPaging && paging.totalCount > 0"
+  (paging)="onPageChangeHandler($event)"
   [pageSize]="paging.pageSize"
   [totalCount]="paging.totalCount">
 </app-paging>

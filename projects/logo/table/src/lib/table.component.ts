@@ -221,7 +221,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   set columns(value: TableColumn[]) {
     this._columns = value;
-    // TODO this.excel.columns = value;
+    this.excel.columns = <ExcelTableColumn[]>value;
   }
 
   private _selected: any = null;
@@ -395,6 +395,10 @@ export class TableComponent implements OnInit, OnDestroy {
         (response: ResponseBody<any>) => this.onLoadSuccessHandler(response),
         (error: ErrorResponse<any>) => this.onLoadErrorHandler(error)
       );
+    }
+
+    if (!this.serverSide) {
+      console.log('// TODO client side data listeleme yapmak gerek');
     }
   }
 

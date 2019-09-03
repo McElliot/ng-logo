@@ -50,7 +50,7 @@ export class AppComponent {
     ]
   }; // Excel Module
   pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
-  public district: { status: boolean, list: any[], columns: TableColumn[], rows: any, events: any } = {
+  district: { status: boolean, list: any[], columns: TableColumn[], rows: any, events: any } = {
     status: true,
     list: [],
     columns: [
@@ -69,13 +69,35 @@ export class AppComponent {
         display: 'delivery',
         variable: 'count',
         filter: 'text'
+      },
+      {
+        display: 'test',
+        variable: 'surname',
+        filter: 'text'
+      },
+      {
+        display: 'neden',
+        variable: 'because',
+        filter: 'text'
       }
     ],
     rows: [
-      {id: '1', distributionZone: {name: 'Çorum'}, count: 19},
-      {id: '2', distributionZone: {name: 'Ankara'}, count: 6},
-      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34},
-      {id: '4', distributionZone: {name: 'Samsun'}, count: 55},
+      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'konakcı', because: 'room with'},
+      {id: '2', distributionZone: {name: 'Ankara'}, count: 6, surname: '', because: 'room with'},
+      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', distributionZone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', distributionZone: {name: 'Ankara'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', distributionZone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', distributionZone: {name: 'Ankara'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', distributionZone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', distributionZone: {name: 'Ankara'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', distributionZone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'}
     ],
     events: {
       click: (row: any) => {

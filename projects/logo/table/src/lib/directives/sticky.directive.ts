@@ -76,11 +76,11 @@ export class StickyDirective implements AfterViewInit {
 
   createStickyHeader() {
     const temp: NodeListOf<Element> = this.host.querySelectorAll('.div-sticky');
-    const div = (<any>document.createElement('div'));
+    const div = this.renderer.createElement('div');
     this.renderer.addClass(div, 'div-sticky');
     this.stickyHeader = temp.length > 0 ? temp[0] : div;
     this.stickyHeader.innerHTML = '';
-    const table = (<any>document.createElement('table'));
+    const table = this.renderer.createElement('table');
     this.renderer.addClass(table, 'table');
     table.appendChild((<any>this.th[0]).parentElement);
     if (this.filter.length > 0) {

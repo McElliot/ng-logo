@@ -12,6 +12,7 @@
 :host {
   @import "./directives/sticky.directive";
   display: block;
+  border: 1px solid red;
 
   .container {
     display: none;
