@@ -193,6 +193,29 @@ export class Util {
   }
 
   /**
+   * Returns matched result in the each array object with given filter object
+   *
+   * @param value: Object[] - The source object which will be searched inside
+   * @param filter: Object - Given object will be find
+   * @param exact: boolean - Compare for value as exactly same. Otherwise it will compare with Regexp
+   * for more information look to the ObjectExtender.contains() method.
+   * @returns Object
+   */
+  static findAllObjectInArray(value, filter: any, exact = false) {
+    const result: any = [];
+    value.forEach((item: any) => {
+      if (item !== null && typeof item !== 'undefined') {
+        if (Util.type(item) === 'Object' && Util.isContained(item, filter, exact)) {
+          result.push(item);
+        } else if (item.constructor.name === 'Array') {
+          return Util.isContained(item, filter, exact);
+        }
+      }
+    });
+    return result;
+  }
+
+  /**
    * Remove character from given string with given count
    * Usage: Util.removeCharsBetween('serkan', 3, 2);
    * @param value - String value will be split

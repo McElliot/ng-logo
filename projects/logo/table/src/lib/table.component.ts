@@ -377,7 +377,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   clientSideFilter() {
-    this.rows = JSON.parse(JSON.stringify(this.orginal && Util.find(this.orginal, this.filter, false)));
+    this.rows = JSON.parse(JSON.stringify(this.orginal && Util.findAllObjectInArray(this.orginal, this.filter, false)));
   }
 
   load() {
