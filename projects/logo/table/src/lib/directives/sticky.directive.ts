@@ -34,7 +34,7 @@ export class StickyDirective implements AfterViewInit {
   ngAfterViewInit() {
     if (this.sticky) {
       this.scrollWidth = this.getScrollbarWidth();
-      this.host = this.elRef.nativeElement.closest('app-table');
+      this.host = this.tableComponent.elementRef.nativeElement;
       this.init();
       this.tableComponent.stickyInitialized = true;
     }
@@ -76,9 +76,12 @@ export class StickyDirective implements AfterViewInit {
 
   createStickyHeader() {
     const temp: NodeListOf<Element> = this.host.querySelectorAll('.div-sticky');
-    this.stickyHeader = temp.length > 0 ? temp[0] : (<any>document.createElement('div')).addClass('div-sticky');
+    const div = (<any>document.createElement('div'));
+    this.renderer.addClass(div, 'div-sticky');
+    this.stickyHeader = temp.length > 0 ? temp[0] : div;
     this.stickyHeader.innerHTML = '';
-    const table = (<any>document.createElement('table')).addClass('table');
+    const table = (<any>document.createElement('table'));
+    this.renderer.addClass(table, 'table');
     table.appendChild((<any>this.th[0]).parentElement);
     if (this.filter.length > 0) {
       table.appendChild(this.filter[0]);

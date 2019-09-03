@@ -3,6 +3,7 @@ import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
 import {Title} from '@angular/platform-browser';
+import {TableColumn} from '../../projects/logo/table/src/lib/table.component';
 
 @Component({
   selector: 'lbs-root',
@@ -18,6 +19,7 @@ export class AppComponent {
   excelSample = {
     fileName: 'ExcelFile',
     header: ['CODE', 'ADDRESS', 'NAME', 'SURNAME'],
+    complete: this.excelComplete,
     column: [
       {
         display: 'ID',
@@ -48,6 +50,39 @@ export class AppComponent {
     ]
   }; // Excel Module
   pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
+  public district: { status: boolean, list: any[], columns: TableColumn[], rows: any, events: any } = {
+    status: true,
+    list: [],
+    columns: [
+      {
+        display: 'ID',
+        variable: 'id',
+        filter: 'text',
+        hidden: true
+      },
+      {
+        display: 'zones',
+        variable: 'distributionZone.name',
+        filter: 'text'
+      },
+      {
+        display: 'delivery',
+        variable: 'count',
+        filter: 'text'
+      }
+    ],
+    rows: [
+      {id: '1', distributionZone: {name: 'Çorum'}, count: 19},
+      {id: '2', distributionZone: {name: 'Ankara'}, count: 6},
+      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34},
+      {id: '4', distributionZone: {name: 'Samsun'}, count: 55},
+    ],
+    events: {
+      click: (row: any) => {
+        console.log('clicked');
+      }
+    }
+  };
 
   constructor(private titleService: Title, private languageService: LanguageService, private stateService: StateService) {
     this.addLanguage();
