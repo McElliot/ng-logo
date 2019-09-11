@@ -39,6 +39,31 @@ export class Util {
   }
 
   /**
+   * Usage: Util.convertToEnglishLetters('Şey BENİM ADIM ağa'); // output: Sey BENIM ADIM aga
+   * @param value: string - Text will be converted to the English characters
+   * return string
+   */
+  static convertToEnglishLetters(value: any): string {
+    const letters: any = {
+      'ı': 'i',
+      'ş': 's',
+      'ğ': 'g',
+      'ü': 'u',
+      'ç': 'c',
+      'ö': 'o',
+      'İ': 'I',
+      'Ş': 'S',
+      'Ğ': 'G',
+      'Ü': 'U',
+      'Ç': 'C',
+      'Ö': 'O'
+    };
+    return value.replace(/(([ışğüçöİŞĞÜÇÖ]))/g, function (letter: string) {
+      return letters[letter];
+    });
+  }
+
+  /**
    * This method returns Object type
    * @param value - The target data from which will learn the type.
    */
