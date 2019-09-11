@@ -6,6 +6,7 @@
  */
 
 import {Pipe, PipeTransform} from '@angular/core';
+import {Util} from '@logo/core';
 
 @Pipe({name: 'orderBy', pure: false})
 export class OrderPipe implements PipeTransform {
@@ -17,8 +18,8 @@ export class OrderPipe implements PipeTransform {
     const parsedA = parseFloat(a);
     const parsedB = parseFloat(b);
     if ((isNaN(parsedA) || !isFinite(a)) || (isNaN(parsedB) || !isFinite(b))) {
-      const lowerA = a.toLowerCase();
-      const lowerB = b.toLowerCase();
+      const lowerA = Util.turkishToLower(a); // a.toLowerCase();
+      const lowerB = Util.turkishToLower(b); // b.toLowerCase();
       if (lowerA < lowerB) { // Isn't a number so lowercase the string to properly compare
         return -1;
       }
