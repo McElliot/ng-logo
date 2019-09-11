@@ -16,7 +16,7 @@
     <tr>
       <th *ngIf="index" class="index"></th>
       <th
-        (click)="changeSorting(column)"
+        (click)="changeSortingByColumn(column)"
         *ngFor="let column of columns"
         [hidden]="column.hidden"
         [ngClass]="setTheadClass(column)"
@@ -25,9 +25,6 @@
       >
         {{column.display | translate}}
       </th>
-      <ng-template [ngForOf]="templates" let-head let-i="index" let-odd="odd" ngFor>
-        <th [title]="head.display | translate">{{head.display | translate}}</th>
-      </ng-template>
       <th
         *ngFor="let thead of theads"
         [ngClass]="[thead.className ? thead.className : '']"
@@ -41,12 +38,6 @@
         <input (keyup)="filterAdd(column.variable, $event.target.value)" *ngIf="!column.filterDisable"/>
         <input *ngIf="column.filterDisable" disabled/>
       </th>
-      <ng-template [ngForOf]="templates" let-filter let-i="index" let-odd="odd" ngFor>
-        <th [ngClass]="[filter.className ? filter.className : '']" class="filter">
-          <input (keyup)="filterAdd(filter.variable, $event.target.value)" *ngIf="!!filter.variable"/>
-          <input *ngIf="!filter.variable" disabled/>
-        </th>
-      </ng-template>
       <th *ngFor="let thead of theads" class="filter">
         <input disabled/></th>
     </tr>
@@ -61,7 +52,7 @@
         (dblclick)="dblclick(row, $event)"
         (dragstart)="dragStart($event, row)"
         (lastDoneEmitter)="rendered(row)"
-        *ngFor="let row of (this.serverSide?rows:(rows | orderBy : orderBy())); let i = index; let isOdd = odd; let isEven = even;  let lst= last;"
+        *ngFor="let row of (this.serverSide ? rows : (rows | orderBy : orderBy())); let i = index; let isOdd = odd; let isEven = even;  let lst= last;"
         [draggable]="draggable"
         [height]="height"
         [isLast]="lst"
@@ -70,20 +61,12 @@
       >
         <td *ngIf="index" class="index">{{indexStart + i + 1}}</td>
         <td
-
           *ngFor="let column of columns"
           [hidden]="column.hidden"
           [innerHtml]="objectPathValue(row, column) | format : column.filter"
           [ngClass]="setTdClass(row, column)"
         >
         </td>
-        <ng-template [ngForOf]="templates" let-index="index" let-odd="odd" let-tableTemplate ngFor>
-          <td
-            [innerHtml]="tableTemplateContent(row, tableTemplate, i)"
-            [ngClass]="[tableTemplate.className ? tableTemplate.className : '']"
-          >
-          </td>
-        </ng-template>
         <ng-container
           [ngTemplateOutletContext]="{row: row, index: i, isLast: lst, isOdd: isOdd}"
           [ngTemplateOutlet]="templateRef"

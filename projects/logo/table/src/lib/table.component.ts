@@ -7,49 +7,21 @@ import {Pager, Paging} from '@logo/paging';
 import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo/core';
 import {LanguageService} from '@logo/language';
 
-
-export type VariableResolver = (row: any, column?: TableColumn) => string;
-export type VariableHandler = (data: any) => any;
-export type TemplateHandler = (row: any, template: any, index ?: number) => any;
+export type VariablePathResolver = (row: any, column?: TableColumn) => string;
+export type VariableDataResolver = (data: any) => any;
 
 /**
  * The Table Meta class is used for type definition.
  */
 export class TableMeta<T> {
-  service: { url: string, method: string };
+  service?: { url: string, method: string };
   columns: TableColumn[];
   events?: Events<T>;
   actions?: { [key: string]: TableAction };
   mapPath?: string | null;
-}
-
-/**
- * @Input template usage
- * This input for create extra content for table head and body.
- * Difference of the columns input is content property, This property accepts string or any variable
- * 4 options are required;
- * "template.display" props needs for thead.
- * "template variable" is used for filtering. if set to null inside the thead will be showed disabled inputbox.
- * "template.content"  is need for html content. This function this function gets 2 parameters, first one
- * return current row data, second is index of current row index.
- * "template.className" is need for set style class name
- *
- * Usage example:
- * this.table.templates = [ { display: 'driver', variable: 'courier.courierFullName', content: this.selected.fullname} ];
- *
- * as function usage:
- * this.templates=[{
- *  display: 'count',
- *  variable: null,
- *  content: (row, template, index) => row.deliveries ? row.deliveries.length : 0,
- *  className: 'count'
- * }]
- */
-export class TableTemplate {
-  public display = '';
-  public variable = '';
-  public content: TemplateHandler | null = null;
-  public className = null;
+  status?: boolean;
+  list?: any[];
+  rows: any[];
 }
 
 /**
@@ -96,6 +68,15 @@ export class TableHead {
 }
 
 /**
+ * Sorting requirements
+ */
+export class TableSorting {
+  column: string | VariablePathResolver;
+  descending: boolean;
+  status: boolean;
+}
+
+/**
  * @Input column usage
  * TableColumn class used for define table header properties
  *
@@ -108,17 +89,19 @@ export class TableHead {
  * @property {boolean} [filterDisable=false] if it is true filter of the thead will be disabled input textbox
  * @property {function} [classFunction] method used for return class name
  * @property {function} [variableFunction] method used for change data before return
+ * @property {string} - If you use different sorting then variable use this property.
+ * Ex: {..., variable: 'user.name', sortingKey: 'user.surname'} it will sort by user.surname instead of user.name
  * For example
  */
 export class TableColumn {
   display = '';
-  variable: VariableResolver | string = '';
-  variableFunction?: VariableHandler | null = null;
+  variable: VariablePathResolver | string = '';
+  variableFunction?: VariableDataResolver | null = null;
   filter?: string | 'text' | 'percentage ' | 'decimal' | 'datetime' | 'number' | 'date' | null = 'text';
   filterDisable ? = false;
   hidden ? = true;
   className ? = '';
-  classFunction ?: VariableResolver | null = null;
+  classFunction ?: VariablePathResolver | null = null;
   sortable ? = false;
   sortingKey?: string | null = null;
 }
@@ -159,7 +142,6 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public mapPath: string | null = null;
   @Input() public automatic = true;
   @Input() public multiselect = false;
-  @Input() public templates: TableTemplate[] = [];
   @Input() public theads: TableHead[] = [];
   @Input() public refresh = false;
   @Input() public hasPaging = true;
@@ -193,7 +175,7 @@ export class TableComponent implements OnInit, OnDestroy {
     totalPages: 0
   };
   public list: any[] = [];
-  public sorting: { column: string | VariableResolver, descending: boolean, status: boolean } = {
+  public sorting: { column: string | VariablePathResolver, descending: boolean, status: boolean } = {
     column: 'updatedOn',
     descending: true,
     status: this.sort
@@ -332,9 +314,10 @@ export class TableComponent implements OnInit, OnDestroy {
     return classes;
   }
 
-  changeSorting(column: TableColumn): void {
+  changeSortingByColumn(column: TableColumn): void {
+    console.log('######### REMOVE', column);
     if (column.sortable) {
-      const sort = this.sorting;
+      const sort: TableSorting = this.sorting;
       if (sort.column === column.variable || sort.column === column.sortingKey) {
         sort.descending = !sort.descending;
       } else {
@@ -357,10 +340,6 @@ export class TableComponent implements OnInit, OnDestroy {
       data = column.variableFunction(data);
     }
     return data;
-  }
-
-  tableTemplateContent(row: any, template: TableTemplate, index?: number) {
-    return (typeof (template.content) === 'function' ? template.content(row, template, index) : template.content);
   }
 
   filterAdd(property: any, value: string) {
