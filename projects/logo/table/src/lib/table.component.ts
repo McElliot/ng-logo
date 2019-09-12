@@ -1,4 +1,12 @@
-// AAAA,
+/**
+ * @license
+ * Copyright LOGO YAZILIM SANAYİ VE TİCARET A.Ş. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of LOGO YAZILIM SANAYİ VE TİCARET A.Ş. Limited.
+ * Any reproduction of this material must contain this notice.
+ */
 
 import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
 import {Events} from './types/event.model';
@@ -80,30 +88,30 @@ export class TableSorting {
  * @Input column usage
  * TableColumn class used for define table header properties
  *
- * @property {String} [display=''] - Visible text, this text will be translate by language file array
- * @property {String | function} [variable=''] - this prop used for set Rest Service return json prop path.
+ * @prop {String} [display=''] - Visible text, this text will be translate by language file array
+ * @prop {String | function} [variablePath=''] - this prop used for set Rest Service return json prop path.
  * This property can also be assigned as a function. If use as a function, it must return object path again.
  * For example: Rest service return {person: {name: 'serkan', surname: 'konakcı'}} and you want to display surname on this column
- * you must to set the variable field value to 'person.surname' Sample: column.variable = 'person.surnaname'
- * @property {String} [filter=''] - format of the Pipe types {text | date | percentage | decimal | datetime | number }
- * @property {boolean} [filterDisable=false] if it is true filter of the thead will be disabled input textbox
- * @property {function} [classFunction] method used for return class name
- * @property {function} [variableFunction] method used for change data before return
- * @property {string} - If you use different sorting then variable use this property.
- * Ex: {..., variable: 'user.name', sortingKey: 'user.surname'} it will sort by user.surname instead of user.name
+ * you must to set the variablePath field value to 'person.surname' Sample: column.variablePath = 'person.surnaname'
+ * @prop {String} [filter=''] - format of the Pipe types {text | date | percentage | decimal | datetime | number }
+ * @prop {boolean} [filterDisable=false] if it is true filter of the thead will be disabled input textbox
+ * @prop {function} [classFunction] method used for return class name
+ * @prop {function} [variableFunction] method used for change data before return
+ * @prop {string} sortingKey  - If you use different sorting then variablePath use this property.
+ * Ex: {..., variablePath: 'user.name', sortingKey: 'user.surname'} it will sort by user.surname instead of user.name
  * For example
  */
 export class TableColumn {
   display = '';
-  variable: VariablePathResolver | string = '';
-  variableFunction?: VariableDataResolver | null = null;
+  variablePath?: VariablePathResolver | string;
+  variableFunction?: VariableDataResolver;
   filter?: string | 'text' | 'percentage ' | 'decimal' | 'datetime' | 'number' | 'date' | null = 'text';
   filterDisable ? = false;
   hidden ? = true;
-  className ? = '';
-  classFunction ?: VariablePathResolver | null = null;
+  className?;
+  classFunction ?: VariablePathResolver;
   sortable ? = false;
-  sortingKey?: string | null = null;
+  sortingKey?: string;
 }
 
 /**
@@ -126,10 +134,10 @@ export class TableAction {
  * The sort input used for sorting table. Default value is true
  * If you want to show table sorting as BE return value are, set this value to false
  *
- * @property {WatchService} [loaded = new WatchService()] - when table load completed this method can be call.
+ * @prop {WatchService} [loaded = new WatchService()] - when table load completed this method can be call.
  * WatchService get tree function this.loaded.success, this.loaded.error and this.loaded.completed
  *
- * @property {Boolean} refButtonStatus - This property hide or show reference buttons (+ and - buttons)
+ * @prop {Boolean} refButtonStatus - This property hide or show reference buttons (+ and - buttons)
  */
 @Component({
   selector: 'lib-table',
@@ -291,7 +299,7 @@ export class TableComponent implements OnInit, OnDestroy {
       classes.push(column.className);
     }
     if (this.sort) {
-      if (column.variable === this.sorting.column || column.sortingKey === this.sorting.column) {
+      if (column.variablePath === this.sorting.column || column.sortingKey === this.sorting.column) {
         classes.push(`sort-${this.sorting.descending ? 'desc' : 'asc'}`);
       } else if (column.sortable) {
         classes.push(`sort`);
@@ -318,10 +326,10 @@ export class TableComponent implements OnInit, OnDestroy {
     console.log('######### REMOVE', column);
     if (column.sortable) {
       const sort: TableSorting = this.sorting;
-      if (sort.column === column.variable || sort.column === column.sortingKey) {
+      if (sort.column === column.variablePath || sort.column === column.sortingKey) {
         sort.descending = !sort.descending;
       } else {
-        sort.column = column.sortingKey ? column.sortingKey : column.variable;
+        sort.column = column.sortingKey ? column.sortingKey : column.variablePath;
         sort.descending = true;
       }
       this.load();
@@ -333,7 +341,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   objectPathValue(row: any, column: TableColumn) {
-    const path: string = (typeof (column.variable) === 'function') ? column.variable(row, column) : column.variable;
+    const path: string = (typeof (column.variablePath) === 'function') ? column.variablePath(row, column) : column.variablePath;
     let data: any = row;
     data = Util.getObjectPathValue(data, path);
     if (!!column.variableFunction) {
@@ -448,16 +456,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   check(row: any) {
-    const selected = this._selected && Util.isContained(row, this._selected);
-    const exist = this.list.indexOf(row) >= 0;
-    if (!(selected && !exist)) {
-    } else {
-      this.list.push(row);
-    }
-    if (exist) {
-      return true;
-    }
-    return selected;
+    return !!this.list.find((item) => Util.isContained(row, item));
   }
 
   click(row: any, $event: Event) {

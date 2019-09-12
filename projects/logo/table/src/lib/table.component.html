@@ -35,7 +35,7 @@
     </tr>
     <tr *ngIf="!reference && hasFilter">
       <th *ngFor="let column of columns" [hidden]="column.hidden ? column.hidden : false" class="filter">
-        <input (keyup)="filterAdd(column.variable, $event.target.value)" *ngIf="!column.filterDisable"/>
+        <input (keyup)="filterAdd(column.variablePath, $event.target.value)" *ngIf="!column.filterDisable"/>
         <input *ngIf="column.filterDisable" disabled/>
       </th>
       <th *ngFor="let thead of theads" class="filter">

@@ -56,35 +56,34 @@ export class AppComponent {
     columns: [
       {
         display: 'ID',
-        variable: 'id',
+        variablePath: 'id',
         filter: 'text',
         hidden: true
       },
       {
         display: 'zones',
-        variable: 'distributionZone.name',
+        variablePath: 'distributionZone.name',
         filter: 'text',
         sortable: true
       },
       {
         display: 'delivery',
-        variable: 'count',
+        variablePath: 'count',
         filter: 'text',
         sortable: true
       },
       {
         display: 'test',
-        variable: 'surname',
+        variablePath: 'surname',
         filter: 'text'
       },
       {
         display: 'neden',
-        variable: 'because',
+        variablePath: 'because',
         filter: 'text'
       },
       {
         display: 'total',
-        variable: null,
         variableFunction: (row: any) => row.count ? row.count + 'babo' : 0,
         className: 'total',
         sortable: true,
