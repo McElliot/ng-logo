@@ -195,6 +195,7 @@ export class TableComponent implements OnInit, OnDestroy {
   public drag: { start: boolean, list: any[] } = {start: false, list: []};
   private exporter: ExcelComponent;
   private filterDebounce = new WatcherService();
+  private clickDelay: number = null;
 
   constructor(public elementRef: ElementRef, private api: EndpointService,
               private language: LanguageService,
@@ -459,37 +460,37 @@ export class TableComponent implements OnInit, OnDestroy {
     return !!this.list.find((item) => Util.isContained(row, item));
   }
 
-  click(row: any, $event: Event) {
-    if (this.multiselect) {
-      const index = this.list.indexOf(row);
-      if (index < 0) {
-        this._selected = row;
-        this.list.push(row);
-      } else {
-        this._selected = null;
-        this.list.splice(index, 1);
+  click(row: any, $event: MouseEvent) {
+    clearTimeout(this.clickDelay);
+    this.clickDelay = window.setTimeout(() => {
+      if ($event.detail === 1) {
+        if (this.multiselect) {
+          const index = this.list.indexOf(row);
+          if (index < 0) {
+            this._selected = row;
+            this.list.push(row);
+          } else {
+            this._selected = null;
+            this.list.splice(index, 1);
+          }
+        } else {
+          this.list = [];
+          if (this._selected === row) {
+            this._selected = null;
+          } else {
+            this._selected = row;
+            this.list.push(row);
+          }
+        }
+        if (this.events.click) {
+          this.events.click(row, $event);
+        }
       }
-    } else {
-      this.list = [];
-      if (this._selected === row) {
-        this._selected = null;
-      } else {
-        this._selected = row;
-        this.list.push(row);
-      }
-    }
-    if (this.events.click) {
-      this.events.click(row, $event);
-    }
+    }, 260);
   }
 
-  dblclick(row: any, $event: Event) {
-    // TODO burayı yeni versiyona göre update et: Find, closest, removeClass artık yok
-    const tr: HTMLElement | null = ($event.target as Node).parentElement;
-    const tBody: NodeList | null = ($event.target as any).closest('tbody').find('tr');
-    this._selected = row;
-    (<any>tBody).forEach((element: Element) => this.renderer.removeClass(element, 'clicked'));
-    this._selected ? (<any>tr).addClass('clicked') : (<any>tr).removeClass('clicked');
+  dblclick(row: any, $event: MouseEvent) {
+    window.clearTimeout(this.clickDelay);
     if (this.events.dblclick) {
       this.events.dblclick(row, $event);
     }
