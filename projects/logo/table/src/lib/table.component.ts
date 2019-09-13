@@ -288,7 +288,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   reload() {
-    this.timeout = setInterval(() => {
+    this.timeout = window.setInterval(() => {
       this.load();
     }, this.interval.time);
   }
