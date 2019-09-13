@@ -157,15 +157,7 @@ export class ExcelComponent implements AfterViewInit {
 
   onSuccessHandler(response: any) {
     this.complete.emit(response);
-    if (response) {
-      if (this.type !== 'csv') {
-        this.data = this.excelDataMaintenance(response);
-        this.excelSaver(response);
-      } else {
-        this.data = this.cvsDataMaintenance(response);
-        this.csvSaver(response);
-      }
-    }
+    (response && this.type !== 'csv') ? this.excelSaver(response) : this.csvSaver(response);
   }
 
   excelDataMaintenance(data: any) {
@@ -189,13 +181,13 @@ export class ExcelComponent implements AfterViewInit {
   }
 
   excelSaver(value: any) {
-    const xmlSheet = new ExcelWriter().xlsTo(this.data, this.header);
+    const xmlSheet = new ExcelWriter().xlsTo(this.excelDataMaintenance(value), this.header);
     const blob = new Blob([xmlSheet], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'});
     this.fileSaver(blob, 'xls');
   }
 
   csvSaver(value: any) {
-    const cvsSheet = new CvsWriter(this.data, this.header).toCvs();
+    const cvsSheet = new CvsWriter(this.cvsDataMaintenance(value), this.header).toCvs();
     const blob = new Blob([cvsSheet], {type: 'text/csv;charset=utf-8;'});
     this.fileSaver(blob, 'csv');
   }
