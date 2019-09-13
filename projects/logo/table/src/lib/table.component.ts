@@ -24,6 +24,7 @@ export type VariableDataResolver = (data: any) => any;
 export class TableMeta<T> {
   service?: { url: string, method: string };
   columns: TableColumn[];
+  heads: TableHead[];
   events?: Events<T>;
   actions?: { [key: string]: TableAction };
   mapPath?: string | null;
@@ -152,6 +153,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public multiselect = false;
   @Input() public theads: TableHead[] = [];
   @Input() public refresh = false;
+  @Input() public pageSize = 10;
   @Input() public hasPaging = true;
   @Input() public hasFilter = true;
   @Input() public rows: any[] = [];
@@ -184,8 +186,8 @@ export class TableComponent implements OnInit, OnDestroy {
   };
   public list: any[] = [];
   public sorting: { column: string | VariablePathResolver, descending: boolean, status: boolean } = {
-    column: 'updatedOn',
-    descending: true,
+    column: '',
+    descending: false,
     status: this.sort
   };
   public filter ? = {};
@@ -228,6 +230,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // TODO this.loadingService.status(true, 'table init');
+    this.paging.pageSize = this.pageSize;
     this.sorting.status = this.sort;
     this.service.method = this.service.method || 'GET';
     // TODO debounce time could be set outside of the component
@@ -324,7 +327,6 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   changeSortingByColumn(column: TableColumn): void {
-    console.log('######### REMOVE', column);
     if (column.sortable) {
       const sort: TableSorting = this.sorting;
       if (sort.column === column.variablePath || sort.column === column.sortingKey) {
@@ -359,35 +361,36 @@ export class TableComponent implements OnInit, OnDestroy {
 
   setFilter(filter: any) {
     this.filter = filter;
-    this.orginal = this.orginal || this.rows;
     this.paging.pageNumber = 0; // !(<any>this.filter).isNull() ? 0 : this.paging.pageNumber;
-    (this.serverSide) ? this.load() : this.clientSideFilter();
+    this.load();
   }
 
-  clientSideFilter() {
-    this.rows = JSON.parse(JSON.stringify(this.orginal && Util.findAllObjectInArray(this.orginal, this.filter, false)));
+  clientSideLoading() {
+    this.orginal = this.orginal || this.rows;
+    const startIndex = this.paging.pageNumber * this.paging.pageSize;
+    const filtered = JSON.parse(JSON.stringify(this.orginal && Util.findAllObjectInArray(this.orginal, this.filter, false)));
+    this.rows = filtered.slice(startIndex, startIndex + this.paging.pageSize);
+    this.paging.totalCount = filtered.length;
+  }
+
+  serverSideLoading() {
+    // TODO this.loadingService.status(true, `${this.service.url} - table start`);
+    this.api.request(this.service.method, this.service.url, {
+      body: {
+        data: this.filter,
+        pageNumber: this.paging.pageNumber,
+        pageSize: this.paging.pageSize,
+        sortList: this.getSort(),
+        ...this.body
+      }
+    }).subscribe(
+      (response: ResponseBody<any>) => this.onLoadSuccessHandler(response),
+      (error: ErrorResponse<any>) => this.onLoadErrorHandler(error)
+    );
   }
 
   load() {
-    if (!!this.service.url) {
-      // TODO this.loadingService.status(true, `${this.service.url} - table start`);
-      this.api.request(this.service.method, this.service.url, {
-        body: {
-          data: this.filter,
-          pageNumber: this.paging.pageNumber,
-          pageSize: this.paging.pageSize,
-          sortList: this.getSort(),
-          ...this.body
-        }
-      }).subscribe(
-        (response: ResponseBody<any>) => this.onLoadSuccessHandler(response),
-        (error: ErrorResponse<any>) => this.onLoadErrorHandler(error)
-      );
-    }
-
-    if (!this.serverSide) {
-      console.log('// TODO client side data listeleme yapmak gerek');
-    }
+    (this.serverSide && !!this.service.url) ? this.serverSideLoading() : this.clientSideLoading();
   }
 
   rendered(row?: any) {
@@ -399,8 +402,6 @@ export class TableComponent implements OnInit, OnDestroy {
     const sortList: any = {};
     if (this.sorting !== null && this.sorting.status) {
       sortList[`${this.sorting.column}`] = this.sorting.descending ? 'DESC' : 'ASC';
-    } else {
-      sortList['updatedOn'] = 'DESC';
     }
     return sortList;
   }

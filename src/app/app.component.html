@@ -27,11 +27,11 @@
 <h1>Mask Input</h1>
 <input
     #dateRef
-    [case]="'upper'"
+    [case]="'lower'"
     [conditions]="[{cases: [{position: 2, regexp:'^[0-9]$'}], placeholder: 'X-0000000000'}]"
     [maskType]="'date'"
     [placeholder]="'XX-00000'"
-    [regexp]="'^[X]{1,2}$|^[X]{1,2}[0-9]*$'"
+    [regexp]="'^[a-zA-Z]{1,2}$|^[a-zA-Z]{1,2}[0-9]*$'"
     masker
 />
 
@@ -46,28 +46,46 @@
 </excel>
 
 <h1>Paging Module</h1>
+
 <app-paging
   (paging)="pagingModule.onPageChangeHandler($event)"
   *ngIf="true"
-  [pageSize]="4"
-  [totalCount]="14"
+  [pageSize]="5"
+  [totalCount]="140"
 >
 </app-paging>
 
 <h1>Table</h1>
 <lib-table
     #districtTable
+    [actions]="district.actions"
     [automatic]="true"
     [columns]="district.columns"
     [hasFilter]="true"
-    [hasPaging]="false"
-    [height]="'492px'"
+    [draggable]="true"
+    [events]="district.events"
+    [hasPaging]="true"
     [rows]="district.rows"
     [serverSide]="false"
     [sticky]="true"
     [sort]="true"
     [multiselect]="true"
+    [height]="'192px'"
+    [mapPath]="district"
+    [pageSize]="4"
+    [theads]="district.heads"
 >
+  <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
+    <td>
+      row: {{row.distributionZone.name}}
+      <select>
+        <option>a</option>
+        <option>a</option>
+        <option>a</option>
+        <option>a</option>
+      </select>
+      <button (click)="tetikle(row)">asdsad</button>
+    </td>
+  </ng-template>
 </lib-table>
-
 <router-outlet></router-outlet>

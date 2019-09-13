@@ -14,7 +14,7 @@ const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, exte
 const EXTERNAL_MODULES = [
   LanguageModule.forRoot(languageConf),
   LanguageModule.forChild(languageConf),
-  CoreModule.forRoot(STORAGE_TYPES.SESSION),
+  CoreModule.forRoot(STORAGE_TYPES.LOCAL),
   ExcelModule,
   PagingModule,
   TableModule

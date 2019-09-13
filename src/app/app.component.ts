@@ -84,10 +84,16 @@ export class AppComponent {
       },
       {
         display: 'total',
-        variableFunction: (row: any) => row.count ? row.count + 'babo' : 0,
+        variableFunction: (row: any) => row.count === 34 ? row.count + ' added text ' : 0,
         className: 'total',
         sortable: true,
         sortingKey: 'distributionZone.name'
+      }
+    ],
+    heads: [
+      {
+        display: 'custom',
+        className: 'total'
       }
     ],
     rows: [
@@ -112,8 +118,10 @@ export class AppComponent {
       success: (response) => console.log(response, '===>'),
       click: (row: any) => {
         console.log('clicked');
-      }
-    }
+      },
+      dblclick: (row: any) => console.log('dblclick: ', row)
+    },
+    actions: {newButton: {display: 'new', click: () => this.openSaveModal(), className: 'primary', disable: false}}
   };
 
   constructor(private titleService: Title, private languageService: LanguageService, private stateService: StateService) {
@@ -149,5 +157,13 @@ export class AppComponent {
 
   excelComplete() {
     console.log('excel export completed');
+  }
+
+  tetikle(row) {
+    console.log('denem', row);
+  }
+
+  openSaveModal() {
+    console.log('action');
   }
 }
