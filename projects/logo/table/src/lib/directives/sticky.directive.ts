@@ -9,7 +9,7 @@
  */
 
 import {AfterViewInit, Directive, ElementRef, Host, Input, Renderer2} from '@angular/core';
-import * as resize from 'element-resize-event';
+import resize from 'element-resize-event';
 import {TableComponent} from '../table.component';
 
 @Directive({
@@ -62,14 +62,12 @@ export class StickyDirective implements AfterViewInit {
     this.filter = this.tableComponent.stickyInitialized ?
       this.host.querySelectorAll('.div-sticky tr:first-child + tr') : this.table.querySelectorAll('thead tr:first-child + tr');
     this.tableContainer = this.table.parentElement;
-    resize(this.elRef.nativeElement, () => {
-      this.interval();
-    });
+    resize(this.elRef.nativeElement, () => this.interval());
   }
 
   interval() {
     clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
+    this.timeout = window.setTimeout(() => {
       this.setWidth();
     }, 100);
   }
@@ -122,6 +120,4 @@ export class StickyDirective implements AfterViewInit {
     (outer as any).parentNode.removeChild(outer);
     return widthNoScroll - widthWithScroll;
   }
-
-
 }

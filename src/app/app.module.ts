@@ -8,7 +8,6 @@ import {CoreModule, STORAGE_TYPES} from '@logo/core';
 import {ExcelModule} from '@logo/excel';
 import {PagingModule} from '@logo/paging';
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
-import {ExcelModule} from '../../projects/logo/excel/src/lib/excel.module';
 import {TableModule} from '../../projects/logo/table/src/lib/table.module';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
