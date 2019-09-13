@@ -37,6 +37,7 @@ Alternative repositories:
 - npm set registry https://dregistry.logo.com.tr/repository/npm-logofe/
 - npm set registry https://dregistry.logo.com.tr/repository/npm-logfe-group/
 - npm set registry https://registry.npmjs.org/
+- npm get registry
 
 Nexus Repository Manager Links:
 

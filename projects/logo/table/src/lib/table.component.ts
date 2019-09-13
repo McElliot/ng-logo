@@ -453,7 +453,9 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   onPageChangeHandler(page: Pager) {
-    this.paging.pageNumber = page.currentPage - 1;
+    if (page.currentPage) {
+      this.paging.pageNumber = page.currentPage - 1;
+    }
     this.load();
   }
 

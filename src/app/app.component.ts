@@ -3,7 +3,7 @@ import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
 import {Title} from '@angular/platform-browser';
-import {TableMeta} from '../../projects/logo/table/src/lib/table.component';
+import {TableMeta} from '@logo/table';
 
 @Component({
   selector: 'lbs-root',
