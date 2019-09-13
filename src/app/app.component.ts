@@ -50,7 +50,7 @@ export class AppComponent {
     ]
   }; // Excel Module
   pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
-  district: TableMeta<any> = {
+  tableDummyData: TableMeta<any> = {
     status: true,
     list: [],
     columns: [
@@ -157,10 +157,6 @@ export class AppComponent {
 
   excelComplete() {
     console.log('excel export completed');
-  }
-
-  tetikle(row) {
-    console.log('denem', row);
   }
 
   openSaveModal() {

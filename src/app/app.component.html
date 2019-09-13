@@ -58,22 +58,22 @@
 <h1>Table</h1>
 <lib-table
     #districtTable
-    [actions]="district.actions"
+    [actions]="tableDummyData.actions"
     [automatic]="true"
-    [columns]="district.columns"
+    [columns]="tableDummyData.columns"
     [hasFilter]="true"
     [draggable]="true"
-    [events]="district.events"
+    [events]="tableDummyData.events"
     [hasPaging]="true"
-    [rows]="district.rows"
+    [mapPath]="tableDummyData"
     [serverSide]="false"
     [sticky]="true"
     [sort]="true"
     [multiselect]="true"
     [height]="'192px'"
-    [mapPath]="district"
+    [rows]="tableDummyData.rows"
     [pageSize]="4"
-    [theads]="district.heads"
+    [theads]="tableDummyData.heads"
 >
   <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
     <td>
@@ -84,7 +84,6 @@
         <option>a</option>
         <option>a</option>
       </select>
-      <button (click)="tetikle(row)">asdsad</button>
     </td>
   </ng-template>
 </lib-table>
