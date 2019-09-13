@@ -22,10 +22,10 @@
     "@angular/platform-browser": "~7.0.0",
     "@angular/platform-browser-dynamic": "~7.0.0",
     "@angular/router": "~7.0.0",
-    "@logo/core": "^0.0.5",
-    "@logo/excel": "^0.0.1",
-    "@logo/language": "^0.0.1",
-    "@logo/paging": "0.0.1",
+    "@logo/core": "~0.0.7",
+    "@logo/excel": "~0.0.3",
+    "@logo/language": "~0.0.1",
+    "@logo/paging": "~0.0.1",
     "core-js": "^2.5.4",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.26"
@@ -50,7 +50,7 @@
     "ng-packagr": "^4.2.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "tsickle": ">=0.29.0",
+    "tsickle": "^0.37.0",
     "tslib": "^1.10.0",
     "tslint": "~5.11.0",
     "typescript": "~3.1.6"

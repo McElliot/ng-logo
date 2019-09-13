@@ -39,6 +39,31 @@ export class Util {
   }
 
   /**
+   * Usage: Util.convertToEnglishLetters('Şey BENİM ADIM ağa'); // output: Sey BENIM ADIM aga
+   * @param value: string - Text will be converted to the English characters
+   * return string
+   */
+  static convertToEnglishLetters(value: any): string {
+    const letters: any = {
+      'ı': 'i',
+      'ş': 's',
+      'ğ': 'g',
+      'ü': 'u',
+      'ç': 'c',
+      'ö': 'o',
+      'İ': 'I',
+      'Ş': 'S',
+      'Ğ': 'G',
+      'Ü': 'U',
+      'Ç': 'C',
+      'Ö': 'O'
+    };
+    return value.replace(/(([ışğüçöİŞĞÜÇÖ]))/g, function (letter: string) {
+      return letters[letter];
+    });
+  }
+
+  /**
    * This method returns Object type
    * @param value - The target data from which will learn the type.
    */
@@ -190,6 +215,29 @@ export class Util {
       return a;
     };
     return array.reduce(method, []);
+  }
+
+  /**
+   * Returns matched result in the each array object with given filter object
+   *
+   * @param value: Object[] - The source object which will be searched inside
+   * @param filter: Object - Given object will be find
+   * @param exact: boolean - Compare for value as exactly same. Otherwise it will compare with Regexp
+   * for more information look to the ObjectExtender.contains() method.
+   * @returns Object
+   */
+  static findAllObjectInArray(value, filter: any, exact = false) {
+    const result: any = [];
+    value.forEach((item: any) => {
+      if (item !== null && typeof item !== 'undefined') {
+        if (Util.type(item) === 'Object' && Util.isContained(item, filter, exact)) {
+          result.push(item);
+        } else if (item.constructor.name === 'Array') {
+          return Util.isContained(item, filter, exact);
+        }
+      }
+    });
+    return result;
   }
 
   /**

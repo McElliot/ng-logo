@@ -2,10 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.6.
 
-##### Generate Library
+#### Generate Library
 Using `ng g library NameOfLibrary(@logo/excel)` command can create a new library on the console screen.
 
-##### Pre Publishing Library
+#### Pre Publishing Library
 Sometimes, some repositories need other dependencies like `moment`. Before publishing this kind of repositories must set `whitelistedNonPeerDependencies` properties of `ng-package.json` file at the root of the library. For example:
 
 ````json
@@ -24,7 +24,7 @@ Sometimes, some repositories need other dependencies like `moment`. Before publi
 
 ````
 
-##### Publishing Library
+#### Publishing Library
 There are 4 steps for publish library:
   - On console screen run `ng build @logo/excel` command. It will build project folder under the `dist` folder
   - Change directory path to `cd dist/logo/excel` on console screen

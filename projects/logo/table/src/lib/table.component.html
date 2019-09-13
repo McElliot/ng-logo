@@ -1,0 +1,114 @@
+<!--
+/**
+ * @license
+ * Copyright HepsiExpress Limited. All Rights Reserved.
+ *
+ * Save to the extent permitted by law, you may not use, copy, modify,
+ * distribute or create derivative works of this material or any part
+ * of it without the prior written consent of HepsiExpress Limited.
+ * Any reproduction of this material must contain this notice.
+ */
+-->
+
+<div class="table-container">
+  <table class="table">
+    <thead>
+    <tr>
+      <th *ngIf="index" class="index"></th>
+      <th
+        (click)="changeSortingByColumn(column)"
+        *ngFor="let column of columns"
+        [hidden]="column.hidden"
+        [ngClass]="setTheadClass(column)"
+        [title]="column.display | translate"
+        class="dotted"
+      >
+        {{column.display | translate}}
+      </th>
+      <th
+        *ngFor="let thead of theads"
+        [ngClass]="[thead.className ? thead.className : '']"
+        [title]="thead.display | translate"
+      >
+        {{thead.display | translate}}
+      </th>
+    </tr>
+    <tr *ngIf="!reference && hasFilter">
+      <th *ngFor="let column of columns" [hidden]="column.hidden ? column.hidden : false" class="filter">
+        <input (keyup)="filterAdd(column.variablePath, $event.target.value)" *ngIf="!column.filterDisable"/>
+        <input *ngIf="column.filterDisable" disabled/>
+      </th>
+      <th *ngFor="let thead of theads" class="filter">
+        <input disabled/></th>
+    </tr>
+    </thead>
+    <tbody
+      (dragover)="dragOver($event)"
+      (drop)="drop($event)"
+    >
+    <ng-container *ngIf="rows.length > 0">
+      <tr
+        (click)="click(row, $event)"
+        (dblclick)="dblclick(row, $event)"
+        (dragstart)="dragStart($event, row)"
+        (lastDoneEmitter)="rendered(row)"
+        *ngFor="let row of (this.serverSide ? rows : (rows | orderBy : orderBy())); let i = index; let isOdd = odd; let isEven = even;  let lst= last;"
+        [draggable]="draggable"
+        [height]="height"
+        [isLast]="lst"
+        [ngClass]="{'selected':check(row), 'odd': isOdd, 'even': isEven}"
+        [stickyDirective]="lst && sticky"
+      >
+        <td *ngIf="index" class="index">{{indexStart + i + 1}}</td>
+        <td
+          *ngFor="let column of columns"
+          [hidden]="column.hidden"
+          [innerHtml]="objectPathValue(row, column) | format : column.filter"
+          [ngClass]="setTdClass(row, column)"
+        >
+        </td>
+        <ng-container
+          [ngTemplateOutletContext]="{row: row, index: i, isLast: lst, isOdd: isOdd}"
+          [ngTemplateOutlet]="templateRef"
+        >
+        </ng-container>
+      </tr>
+    </ng-container>
+    <tr (lastDoneEmitter)="rendered(null)" *ngIf="rows.length <= 0" [isLast]="true">
+      <td [colSpan]="columns.length" class="no-data">
+        {{"no_data_were_found" | translate}}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="!hasPaging && rows.length >= 0" class="app-paging">
+  <div class="row">
+    <div class="flex-grow total-count">
+      <strong>{{rows.length}}</strong> {{"record_found" | translate}}
+    </div>
+  </div>
+</div>
+
+<!--*ngIf="!reference && hasPaging && paging.totalCount > 0"-->
+<app-paging
+  *ngIf="hasPaging && paging.totalCount > 0"
+  (paging)="onPageChangeHandler($event)"
+  [pageSize]="paging.pageSize"
+  [totalCount]="paging.totalCount">
+</app-paging>
+
+<div *ngIf="excel.status || !!reference || !! refresh || actions.length > 0" class="table-actions">
+  <button (click)="add()" *ngIf="!!reference && refButtonStatus" class="primary ion-plus"></button>
+  <button (click)="remove()" *ngIf="!!reference && refButtonStatus" class="secondary ion-minus"></button>
+  <button (click)="load()" *ngIf="!!refresh" class="secondary">{{"refresh" | translate}}</button>
+  <ng-container *ngFor="let action of actions">
+    <button (click)="action.click ? action.click() : null" [class]="action.className" [disabled]="action.disable">
+      {{action.display | translate}}
+    </button>
+  </ng-container>
+  <button (click)="excelExport()" *ngIf="excel.status && rows.length > 0" [disabled]="rows.length<=0" class="secondary">
+    {{"excel" | translate}}
+  </button>
+</div>

@@ -15,6 +15,7 @@
       "node_modules/@types"
     ],
     "lib": [
+      "esnext.array",
       "es2018",
       "dom"
     ],
@@ -60,6 +61,12 @@
       ],
       "@logo/paging/*": [
         "dist/logo/paging/*"
+      ],
+      "@logo/table": [
+        "dist/logo/table"
+      ],
+      "@logo/table/*": [
+        "dist/logo/table/*"
       ]
     }
   }
