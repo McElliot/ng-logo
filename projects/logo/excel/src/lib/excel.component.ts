@@ -95,13 +95,14 @@ export interface RequestOptions<T> {
 }
 
 export interface ExcelSettingType {
-  service: RequestOptions<any>;
-  status?: Boolean;
-  data?: any[];
   columns?: ExcelTableColumn[];
-  header?: any[] | null;
+  data?: any[];
+  status?: boolean;
+  header?: string[] | null;
   name?: string;
+  service?: RequestOptions<any>;
   type?: string;
+  complete?: Function;
 }
 
 @Component({
