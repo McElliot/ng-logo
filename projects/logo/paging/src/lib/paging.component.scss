@@ -43,6 +43,7 @@ $paging-link-color: #303e4d;
 
     .page-numbers {
       justify-content: flex-end;
+      cursor: pointer;
 
       .pagination {
         text-align: right;
@@ -53,7 +54,7 @@ $paging-link-color: #303e4d;
         li {
           display: inline-block;
           padding: 0 5px;
-          font-size: 12px;
+          font-size: 11px;
           @extend %no-select;
 
           a {
@@ -88,6 +89,4 @@ $paging-link-color: #303e4d;
       }
     }
   }
-
-
 }
