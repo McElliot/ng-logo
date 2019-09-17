@@ -7,98 +7,123 @@
  * of it without the prior written consent of HepsiExpress Limited.
  * Any reproduction of this material must contain this notice.
  */
-@import "table.config";
 
-:host {
-  @import "./directives/sticky.directive";
+$color: rgb(0, 174, 255);
+$background: lighten($color, 1);
+$table-border-color: lighten($background, 30);
+
+@mixin animate($time:0.1s, $event: all, $animate:linear) {
+  transition: $event $time $animate;
+}
+
+:host ::ng-deep {
   display: block;
-  border: 1px solid red;
 
-  .container {
-    display: none;
+  .table-container {
+    // display: none;
+    position: relative;
+    overflow: auto;
   }
 
-  .table {
+  table {
     font-size: 12px;
     border-collapse: separate;
     border-spacing: 0;
     width: 100%;
-    background-color: #ffffff;
+    position: relative;
 
-    th, td {
-      text-align: left;
-      font-weight: 400;
-      padding: 10px;
-    }
+    thead tr {
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 0;
+        font-weight: 400;
+        padding: 10px;
+        background-color: lighten($background, 5);
+        border-right: 1px solid lighten($background, 0);
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        text-align: left;
+        height: 40px;
+        box-sizing: border-box;
 
-    th {
-      background-color: $table-background-color;
-      border-right: 1px solid darken($table-background-color, 3);
-      font-size: 14px;
-      color: $color;
-      cursor: pointer;
-      white-space: nowrap;
+        &.sort-asc {
+          &::before {
+            content: "\f0d7";
+            display: inline-block;
+            @include animate();
+          }
+        }
 
-      &.sort-asc {
-        &::before {
-          content: "\f0d7";
-          display: inline-block;
-          // TODO @include animate();
+        &.sort-desc {
+          &::before {
+            content: "\f0d7";
+            display: inline-block;
+            // TODO @include rotate(180deg);
+            // TODO @include animate();
+          }
+        }
+
+        &.filter {
+          background-color: lighten($background, 20);
+          border-right: 1px solid lighten($background, 15);
+          line-height: 100%;
+          text-align: center;
+
+          input {
+            border: none;
+            padding: 0;
+            width: 100%;
+            text-indent: 5px;
+            font-size: 10px;
+            line-height: 20px;
+            height: auto;
+          }
+
+          input:disabled {
+            opacity: 0.4;
+          }
+        }
+
+        &:last-child {
+          border: none;
         }
       }
 
-      &.sort-desc {
-        &::before {
-          content: "\f0d7";
-          display: inline-block;
-          // TODO @include rotate(180deg);
-          // TODO @include animate();
-        }
+      &:first-child th {
+        z-index: 1;
       }
     }
 
-    th.filter {
-      background-color: lighten($table-background-color, 5);
-      border-right: 1px solid $table-background-color;
-      line-height: 100%;
-      text-align: center;
-      height: 20px;
-
-      input {
-        border: none;
-        padding: 0;
-        width: 100%;
-        text-indent: 5px;
-        font-size: 10px;
-        line-height: 20px;
-        height: auto;
-      }
-
-      input:disabled {
-        opacity: 0.4;
-      }
-    }
-
-    tr {
+    tbody tr {
       &:hover {
-        background: rgba($table-background-color, 0.1);
+        background: rgba($background, 0.1);
       }
-    }
 
-    td {
-      border-bottom: 1px solid $table-border-color;
-      line-height: 20px;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-
-    tr:last-child td {
-      border-bottom: none;
-    }
-
-    tr.selected {
       td {
-        background: rgba($table-background-color, 0.4);
+        font-weight: 400;
+        padding: 10px;
+        border-bottom: 1px solid rgba($background, 0.1);
+        // border-right: 1px solid rgba($background, 0.1);
+        line-height: 20px;
+        cursor: pointer;
+
+        &:last-child {
+          border-right: 1px solid rgba($background, 0.1);
+        }
+
+        &:first-child {
+          border-left: 1px solid rgba($background, 0.1);
+        }
+      }
+
+      &.selected {
+        border: 1px solid red;
+
+        td {
+          background: rgba($background, 0.3);
+        }
       }
     }
 
@@ -114,5 +139,4 @@
       margin-right: 10px;
     }
   }
-
 }

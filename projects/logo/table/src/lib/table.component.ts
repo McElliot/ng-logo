@@ -159,10 +159,9 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public rows: any[] = [];
   @Input() public index = false;
   @Input() public indexStart = 0;
-  @Input() public sticky = true;
   @Input() public sort = false; // table sorting feature parameter.
   @Input() public serverSide = true; // table sorting side parameter
-  @Input() public height = '500px';
+  @Input() public height = null;
   @Input() public actions: TableAction[] = [];
   @Input() public service: { url: string | null, method: string } = {url: null, method: 'GET'};
   @Input() public excel: ExcelSettingType = {
@@ -176,7 +175,6 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public draggable = false;
   public orginal: any[] | null = null;
   @Input() events: Events<any> = new Events();
-  public stickyInitialized = false;
   public loaded: WatcherService = new WatcherService();
   public paging: Paging = {
     pageSize: 10,

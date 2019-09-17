@@ -8,7 +8,8 @@ import {CoreModule, STORAGE_TYPES} from '@logo/core';
 import {ExcelModule} from '@logo/excel';
 import {PagingModule} from '@logo/paging';
 import {LanguageInitSetting, LanguageModule} from '@logo/language';
-import {TableModule} from '@logo/table';
+import {TableModule} from '../../projects/logo/table/src/lib/table.module';
+// import {TableModule} from '@logo/table';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
 const EXTERNAL_MODULES = [

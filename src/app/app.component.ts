@@ -3,7 +3,9 @@ import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
 import {Title} from '@angular/platform-browser';
-import {TableMeta} from '@logo/table';
+import {TableMeta} from '../../projects/logo/table/src/lib/table.component';
+
+// import {TableMeta} from '@logo/table';
 
 @Component({
   selector: 'lbs-root',
@@ -58,7 +60,7 @@ export class AppComponent {
         display: 'ID',
         variablePath: 'id',
         filter: 'text',
-        hidden: true
+        hidden: false
       },
       {
         display: 'zones',
@@ -84,7 +86,7 @@ export class AppComponent {
       },
       {
         display: 'total',
-        variableFunction: (row: any) => row.count === 34 ? row.count + ' added text ' : 0,
+        variableFunction: (row: any) => row.count === 34 ? row.count + ' added text adsasd asdasdasd asdsad ' : 0,
         className: 'total',
         sortable: true,
         sortingKey: 'distributionZone.name'

@@ -65,25 +65,17 @@
     [draggable]="true"
     [events]="tableDummyData.events"
     [hasPaging]="true"
-    [mapPath]="tableDummyData"
     [serverSide]="false"
-    [sticky]="true"
     [sort]="true"
     [multiselect]="true"
-    [height]="'192px'"
+    [height]="'300px'"
     [rows]="tableDummyData.rows"
-    [pageSize]="4"
+    [pageSize]="14"
     [theads]="tableDummyData.heads"
 >
   <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
     <td>
       row: {{row.distributionZone.name}}
-      <select>
-        <option>a</option>
-        <option>a</option>
-        <option>a</option>
-        <option>a</option>
-      </select>
     </td>
   </ng-template>
 </lib-table>

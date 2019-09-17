@@ -10,7 +10,7 @@
  */
 -->
 
-<div class="table-container">
+<div [ngStyle]="{'max-height': height ? height : 'auto'}" class="table-container">
   <table class="table">
     <thead>
     <tr>
@@ -35,11 +35,14 @@
     </tr>
     <tr *ngIf="!reference && hasFilter">
       <th *ngFor="let column of columns" [hidden]="column.hidden ? column.hidden : false" class="filter">
-        <input (keyup)="filterAdd(column.variablePath, $event.target.value)" *ngIf="!column.filterDisable"/>
-        <input *ngIf="column.filterDisable" disabled/>
+        <label>
+          <input (keyup)="filterAdd(column.variablePath, $event.target.value)" *ngIf="!column.filterDisable"/>
+          <input *ngIf="column.filterDisable" disabled/>
+        </label>
       </th>
       <th *ngFor="let thead of theads" class="filter">
-        <input disabled/></th>
+        <label><input disabled/></label>
+      </th>
     </tr>
     </thead>
     <tbody
@@ -54,10 +57,8 @@
         (lastDoneEmitter)="rendered(row)"
         *ngFor="let row of (this.serverSide ? rows : (rows | orderBy : orderBy())); let i = index; let isOdd = odd; let isEven = even;  let lst= last;"
         [draggable]="draggable"
-        [height]="height"
         [isLast]="lst"
         [ngClass]="{'selected':check(row), 'odd': isOdd, 'even': isEven}"
-        [stickyDirective]="lst && sticky"
       >
         <td *ngIf="index" class="index">{{indexStart + i + 1}}</td>
         <td

@@ -17,12 +17,11 @@ import {CoreModule} from '@logo/core';
 import {LanguageModule} from '@logo/language';
 import {PagingModule} from '@logo/paging';
 import {TableComponent} from './table.component';
-import {StickyDirective} from './directives/sticky.directive';
 
 @NgModule({
   imports: [CommonModule, PagingModule, HttpClientModule, LanguageModule, CoreModule],
-  declarations: [TableComponent, StickyDirective],
-  exports: [TableComponent, StickyDirective]
+  declarations: [TableComponent],
+  exports: [TableComponent]
 })
 export class TableModule {
 }
