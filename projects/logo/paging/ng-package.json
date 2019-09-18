@@ -3,5 +3,8 @@
   "dest": "../../../dist/logo/paging",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "whitelistedNonPeerDependencies": [
+    "@logo/language"
+  ]
 }

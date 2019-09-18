@@ -6,6 +6,6 @@
     "@angular/core": "^7.0.0"
   },
   "dependencies": {
-    "@logo/language": "^0.0.1"
+    "@logo/language": "~0.0.1"
   }
 }

@@ -2,6 +2,9 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.0.6.
 
+- npm set registry https://dregistry.logo.com.tr/repository/npm-logofe/
+- npm set registry https://dregistry.logo.com.tr/repository/npm-logfe-group/
+
 #### Generate Library
 Using `ng g library NameOfLibrary(@logo/excel)` command can create a new library on the console screen.
 
