@@ -17,9 +17,10 @@ import {CoreModule} from '@logo/core';
 import {LanguageModule} from '@logo/language';
 import {PagingModule} from '@logo/paging';
 import {TableComponent} from './table.component';
+import {ExcelModule} from '@logo/excel';
 
 @NgModule({
-  imports: [CommonModule, PagingModule, HttpClientModule, LanguageModule, CoreModule],
+  imports: [CommonModule, PagingModule, HttpClientModule, LanguageModule, CoreModule, ExcelModule],
   declarations: [TableComponent],
   exports: [TableComponent]
 })

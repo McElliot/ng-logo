@@ -38,10 +38,10 @@
 <h1>Excel Module</h1>
 <excel
   (complete)="excelSample.complete()"
-  [columns]="excelSample.column"
+  [columns]="excelSample.columns"
   [data]="excelSample.data"
   [header]="excelSample.header"
-  [name]="excelSample.fileName"
+  [name]="excelSample.name"
 >
 </excel>
 
@@ -72,6 +72,7 @@
     [rows]="tableDummyData.rows"
     [pageSize]="14"
     [theads]="tableDummyData.heads"
+    [excel]="tableDummyData.excel"
 >
   <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
     <td>

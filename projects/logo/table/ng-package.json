@@ -5,7 +5,7 @@
     "entryFile": "src/public_api.ts"
   },
   "whitelistedNonPeerDependencies": [
-    "element-resize-event",
-    "@logo/paging"
+    "@logo/paging",
+    "@logo/core"
   ]
 }

@@ -10,7 +10,7 @@
 
 import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
 import {Events} from './types/event.model';
-import {ExcelComponent, ExcelSettingType, ExcelTableColumn} from '@logo/excel';
+import {ExcelSettingType, ExcelTableColumn} from '@logo/excel';
 import {Pager, Paging} from '@logo/paging';
 import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo/core';
 import {LanguageService} from '@logo/language';
@@ -26,11 +26,12 @@ export class TableMeta<T> {
   columns: TableColumn[];
   heads: TableHead[];
   events?: Events<T>;
-  actions?: { [key: string]: TableAction };
+  actions?: TableAction[];
   mapPath?: string | null;
   status?: boolean;
   list?: any[];
   rows: any[];
+  excel: ExcelSettingType;
 }
 
 /**
@@ -119,18 +120,16 @@ export class TableColumn {
  * @Input actions usage
  * You can set table actions from another component with this.table.actions
  * Usage example can be found in distributionzone-create.component.ts. Sample usage is:
- * const actions = { newButton: { display: 'new', click: () => this.openSaveModal(), className: 'primary', disable: false } }
- * this.table.actions = [ actions.newButton ]
+ * this.table.actions = [{display: 'new', click: (table: TableComponent) => this.openSaveModal(table), className: 'prm', disable: false}]
  */
 export class TableAction {
-  public click: any;
+  public click: Function;
   public display: string;
   public disable ? = false;
   public className ?: string;
 }
 
 /**
- * @version 1.2.1
  * @Input sort usage
  * The sort input used for sorting table. Default value is true
  * If you want to show table sorting as BE return value are, set this value to false
@@ -164,13 +163,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public height = null;
   @Input() public actions: TableAction[] = [];
   @Input() public service: { url: string | null, method: string } = {url: null, method: 'GET'};
-  @Input() public excel: ExcelSettingType = {
-    service: {
-      url: null,
-      method: 'GET',
-      // success: (response: any) => null
-    }
-  };
+  @Input() public excel: ExcelSettingType;
   @ContentChild(TemplateRef) templateRef: any;
   @Input() public draggable = false;
   public orginal: any[] | null = null;
@@ -193,15 +186,12 @@ export class TableComponent implements OnInit, OnDestroy {
   public interval: { status: boolean, time: number } = {status: false, time: 30000};
   public timeout: number;
   public drag: { start: boolean, list: any[] } = {start: false, list: []};
-  private exporter: ExcelComponent;
   private filterDebounce = new WatcherService();
   private clickDelay: number = null;
 
-  constructor(public elementRef: ElementRef, private api: EndpointService,
-              private language: LanguageService,
+  constructor(public elementRef: ElementRef, private api: EndpointService, private language: LanguageService, public renderer: Renderer2
               // TODO private loadingService: LoadingService,
-              public renderer: Renderer2) {
-    // TODO this.exporter = new ExcelGetter(this.api);
+  ) {
   }
 
   private _columns: TableColumn[] = [];
@@ -244,17 +234,7 @@ export class TableComponent implements OnInit, OnDestroy {
       console.log('########################### Remove This');
       this.reload();
     }
-    this.excel = {
-      status: !!this.excel.status,
-      columns: this._columns as ExcelTableColumn[],
-      name: !!this.excel.name ? this.excel.name : this.language.translate('excel'),
-      service: {
-        url: this.service.url,
-        method: this.service.method,
-        // TODO success: !!this.excel.service && !!this.excel.service.success ? this.excel.service.success : this.events.success
-      },
-      type: this.excel.type || 'xls'
-    };
+    this.setExcelOptions();
   }
 
   ngOnDestroy() {
@@ -265,8 +245,11 @@ export class TableComponent implements OnInit, OnDestroy {
     this.reset();
   }
 
-  getNewExcelOptions() {
+  setExcelOptions() {
     const options: ExcelSettingType = {
+      status: !!this.excel.status,
+      columns: this._columns as ExcelTableColumn[],
+      name: !!this.excel.name ? this.excel.name : this.language.translate('excel'),
       data: this.rows,
       service: {
         url: this.service.url,
@@ -275,14 +258,10 @@ export class TableComponent implements OnInit, OnDestroy {
           data: this.filter
         },
         // TODO success: this.events.success
-      }
+      },
+      type: this.excel.type || 'xls'
     };
     this.excel = {...this.excel, ...options};
-  }
-
-  excelExport() {
-    this.excel.data = this.rows;
-    return this.exporter.download();
   }
 
   reload() {
@@ -438,7 +417,7 @@ export class TableComponent implements OnInit, OnDestroy {
     if (this.rows.length <= 0) {
       this.rendered(null);
     }
-    this.getNewExcelOptions();
+    this.setExcelOptions();
   }
 
   onLoadErrorHandler(error: ErrorResponse<any>): void {

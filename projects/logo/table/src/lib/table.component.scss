@@ -148,13 +148,16 @@ $font-family: "Tahoma";
         text-align: center;
       }
     }
+  }
 
-    .table-actions {
-      padding-top: 20px;
+  .table-actions {
+    padding-top: 20px;
 
-      button {
-        margin-right: 10px;
-      }
+    button {
+      margin-right: 10px;
+      padding: 10px;
+      border: none;
+      background-color: rgba($background, 0.4);
     }
   }
 }

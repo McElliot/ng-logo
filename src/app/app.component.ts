@@ -3,9 +3,8 @@ import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
 import {Title} from '@angular/platform-browser';
-import {TableMeta} from '../../projects/logo/table/src/lib/table.component';
-
-// import {TableMeta} from '@logo/table';
+import {TableComponent, TableMeta} from '@logo/table';
+import {ExcelSettingType} from '@logo/excel';
 
 @Component({
   selector: 'lbs-root',
@@ -18,31 +17,31 @@ export class AppComponent {
   route: RouterLinkActive;
   base64String = 'c2Vya2Fu'; // Base64 Directive
   inputValue; // Mask Directive
-  excelSample = {
-    fileName: 'ExcelFile',
+  excelSample: ExcelSettingType = {  // Excel Module
+    name: 'ExcelFile',
     header: ['CODE', 'ADDRESS', 'NAME', 'SURNAME'],
     complete: this.excelComplete,
-    column: [
+    columns: [
       {
         display: 'ID',
-        variable: 'id',
+        variablePath: 'id',
         hidden: true
       },
       {
         display: 'Code',
-        variable: 'code',
+        variablePath: 'code',
       },
       {
         display: 'Address',
-        variable: 'recipient.address',
+        variablePath: 'recipient.address',
       },
       {
         display: 'Name',
-        variable: 'user.name',
+        variablePath: 'user.name',
       },
       {
         display: 'Surname',
-        variable: 'user.surname',
+        variablePath: 'user.surname',
       }
     ],
     data: [
@@ -50,9 +49,9 @@ export class AppComponent {
       {id: 2, code: 2134, recipient: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
       {id: 3, code: 456456, recipient: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
     ]
-  }; // Excel Module
+  };
   pagingModule = {onPageChangeHandler: ($event) => console.log('Event: ', $event)}; // Paging Module
-  tableDummyData: TableMeta<any> = {
+  tableDummyData: TableMeta<any> = { // Table Module
     status: true,
     list: [],
     columns: [
@@ -123,7 +122,17 @@ export class AppComponent {
       },
       dblclick: (row: any) => console.log('dblclick: ', row)
     },
-    actions: {newButton: {display: 'new', click: () => this.openSaveModal(), className: 'primary', disable: false}}
+    actions: [
+      {display: 'new', click: (table: TableComponent) => this.tableSampleAction('New', table), className: 'primary', disable: false},
+      {display: 'edit', click: (table: TableComponent) => this.tableSampleAction('Edit', table), className: 'primary', disable: false},
+    ],
+    excel: {
+      status: true,
+      complete: (data) => {
+        console.log('trigger excel');
+        console.log('excel, table: ', data);
+      }
+    }
   };
 
   constructor(private titleService: Title, private languageService: LanguageService, private stateService: StateService) {
@@ -161,7 +170,7 @@ export class AppComponent {
     console.log('excel export completed');
   }
 
-  openSaveModal() {
-    console.log('action');
+  tableSampleAction(action: string, table: TableComponent) {
+    console.log(action, 'action triggered', table);
   }
 }

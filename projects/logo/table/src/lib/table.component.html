@@ -105,11 +105,18 @@
   <button (click)="remove()" *ngIf="!!reference && refButtonStatus" class="secondary ion-minus"></button>
   <button (click)="load()" *ngIf="!!refresh" class="secondary">{{"refresh" | translate}}</button>
   <ng-container *ngFor="let action of actions">
-    <button (click)="action.click ? action.click() : null" [class]="action.className" [disabled]="action.disable">
+    <button (click)="action.click ? action.click(this) : null" [class]="action.className" [disabled]="action.disable">
       {{action.display | translate}}
     </button>
   </ng-container>
-  <button (click)="excelExport()" *ngIf="excel.status && rows.length > 0" [disabled]="rows.length<=0" class="secondary">
-    {{"excel" | translate}}
-  </button>
+  <excel
+    (complete)="excel.complete($event)"
+    [columns]="excel.columns"
+    [data]="rows"
+    [header]="excel.header"
+    [name]="excel.name"
+    [status]="excel.status"
+    class="secondary"
+  >
+  </excel>
 </div>
