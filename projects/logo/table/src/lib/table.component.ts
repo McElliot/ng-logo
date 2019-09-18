@@ -140,7 +140,7 @@ export class TableAction {
  * @prop {Boolean} refButtonStatus - This property hide or show reference buttons (+ and - buttons)
  */
 @Component({
-  selector: 'lib-table',
+  selector: 'logo-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })

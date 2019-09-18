@@ -106,7 +106,7 @@ export interface ExcelSettingType {
 }
 
 @Component({
-  selector: 'excel',
+  selector: 'logo-excel',
   template: `
       <ng-container *ngIf="status">
           <span #content (click)="download()"><ng-content></ng-content></span>

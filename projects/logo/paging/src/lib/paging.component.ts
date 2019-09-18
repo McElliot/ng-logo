@@ -24,7 +24,7 @@ export interface Pager {
 }
 
 @Component({
-  selector: 'app-paging',
+  selector: 'logo-paging',
   templateUrl: './paging.component.html',
   styleUrls: ['./paging.component.scss']
 })

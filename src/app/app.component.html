@@ -36,27 +36,27 @@
 />
 
 <h1>Excel Module</h1>
-<excel
+<logo-excel
   (complete)="excelSample.complete()"
   [columns]="excelSample.columns"
   [data]="excelSample.data"
   [header]="excelSample.header"
   [name]="excelSample.name"
 >
-</excel>
+</logo-excel>
 
 <h1>Paging Module</h1>
 
-<app-paging
+<logo-paging
   (paging)="pagingModule.onPageChangeHandler($event)"
   *ngIf="true"
   [pageSize]="5"
   [totalCount]="140"
 >
-</app-paging>
+</logo-paging>
 
-<h1>Table</h1>
-<lib-table
+<h1>Table Module</h1>
+<logo-table
     #districtTable
     [actions]="tableDummyData.actions"
     [automatic]="true"
@@ -79,5 +79,5 @@
       row: {{row.distributionZone.name}}
     </td>
   </ng-template>
-</lib-table>
+</logo-table>
 <router-outlet></router-outlet>
