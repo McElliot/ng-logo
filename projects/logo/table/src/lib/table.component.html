@@ -93,12 +93,12 @@
 </div>
 
 <!--*ngIf="!reference && hasPaging && paging.totalCount > 0"-->
-<app-paging
+<logo-paging
   *ngIf="hasPaging && paging.totalCount > 0"
   (paging)="onPageChangeHandler($event)"
   [pageSize]="paging.pageSize"
   [totalCount]="paging.totalCount">
-</app-paging>
+</logo-paging>
 
 <div *ngIf="excel.status || !!reference || !! refresh || actions.length > 0" class="table-actions">
   <button (click)="add()" *ngIf="!!reference && refButtonStatus" class="primary ion-plus"></button>
@@ -109,7 +109,7 @@
       {{action.display | translate}}
     </button>
   </ng-container>
-  <excel
+  <logo-excel
     (complete)="excel.complete($event)"
     [columns]="excel.columns"
     [data]="rows"
@@ -118,5 +118,5 @@
     [status]="excel.status"
     class="secondary"
   >
-  </excel>
+  </logo-excel>
 </div>
