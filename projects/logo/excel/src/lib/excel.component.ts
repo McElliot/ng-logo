@@ -43,24 +43,24 @@ import {Util} from '@logo/core';
  *   column: [
  *     {
  *       display: 'ID',
- *       variable: 'id',
+ *       variablePath: 'id',
  *       hidden: true
  *     },
  *     {
  *       display: 'Code',
- *       variable: 'code',
+ *       variablePath: 'code',
  *     },
  *     {
  *       display: 'Address',
- *       variable: 'recipient.address',
+ *       variablePath: 'recipient.address',
  *     },
  *     {
  *       display: 'Name',
- *       variable: 'user.name',
+ *       variablePath: 'user.name',
  *     },
  *     {
  *       display: 'Surname',
- *       variable: 'user.surname',
+ *       variablePath: 'user.surname',
  *     }
  *   ],
  *   data: [
@@ -73,7 +73,7 @@ import {Util} from '@logo/core';
 
 export class ExcelTableColumn {
   display: string;
-  variable: string;
+  variablePath: string;
   hidden?: boolean;
 }
 
@@ -108,12 +108,10 @@ export interface ExcelSettingType {
 @Component({
   selector: 'excel',
   template: `
-      <div (click)="download()">
-          <div #content>
-              <ng-content></ng-content>
-          </div>
-          <button *ngIf="!contentExist">Excel</button>
-      </div>
+      <ng-container *ngIf="status">
+          <span #content (click)="download()"><ng-content></ng-content></span>
+          <button *ngIf="!contentExist" (click)="download()">Excel</button>
+      </ng-container>
   `,
   styles: []
 })
@@ -131,7 +129,7 @@ export class ExcelComponent implements AfterViewInit {
     withCredentials: true,
     params: new HttpParams()
   };
-  @Input() public type = 'cvs';
+  @Input() public type = 'xls';
   @Output() public complete: EventEmitter<any> = new EventEmitter();
   @ViewChild('content') public contentContainer: ElementRef;
   public contentExist = false;
@@ -164,9 +162,9 @@ export class ExcelComponent implements AfterViewInit {
   excelDataMaintenance(data: any) {
     return data.map((item: any) => {
       const push: any = {};
-      this.columns.forEach((column: any) => {
+      this.columns.forEach((column: ExcelTableColumn) => {
         if (!column.hidden) {
-          push[column.display] = Util.getObjectPathValue(item, column.variable);
+          push[column.display] = Util.getObjectPathValue(item, column.variablePath);
         }
       });
       return push;
@@ -176,7 +174,7 @@ export class ExcelComponent implements AfterViewInit {
   cvsDataMaintenance(data: any) {
     return data.map((item: any) => {
       return this.columns.map((column: any) => {
-        return Util.getObjectPathValue(item, column.variable);
+        return Util.getObjectPathValue(item, column.variablePath);
       });
     });
   }
