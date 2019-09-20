@@ -332,8 +332,8 @@ export class Util {
   }
 
   /**
-   * This method extract object properties as a string with value
-   * @param object: any - The object will ve exracted
+   * This method extract object all properties path as a string with value
+   * @param object: any - The object will be extracted
    *
    * Usage:
    * const obj = {c: {t: {b: 123, m: 43, d: 48, e: {z: 2}}}, a: 13, b: 34};
