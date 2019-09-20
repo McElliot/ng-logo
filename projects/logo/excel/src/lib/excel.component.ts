@@ -131,7 +131,7 @@ export class ExcelComponent implements AfterViewInit {
   };
   @Input() public type = 'xls';
   @Output() public complete: EventEmitter<any> = new EventEmitter();
-  @ViewChild('content', {static: true}) public contentContainer: ElementRef;
+  @ViewChild('content', {static: false}) public contentContainer: ElementRef;
   public contentExist = false;
 
   constructor(public elementRef: ElementRef, private http: HttpClient) {
