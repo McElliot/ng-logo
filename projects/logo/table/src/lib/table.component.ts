@@ -383,7 +383,7 @@ export class TableComponent implements OnInit, OnDestroy {
       }
       if (filtering) {
         filtering = Util.extractObjectPathValues(filtering);
-        const q = Object.keys(filtering).map((item, index) => `LIKE ${item} '%${filtering[item]}%'`);
+        const q = Object.keys(filtering).map((item, index) => `${item} LIKE '%${filtering[item]}%'`);
         queryParameter.q = q.join(' Or ');
       }
       parameters = queryParameter;
