@@ -14,6 +14,7 @@ import {ExcelSettingType, ExcelTableColumn} from '@logo/excel';
 import {Pager, Paging} from '@logo/paging';
 import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo/core';
 import {LanguageService} from '@logo/language';
+import {HttpParams} from '@angular/common/http';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;
 export type VariableDataResolver = (data: any) => any;
@@ -149,7 +150,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public refButtonStatus = true;
   @Input() public mapPath: string | null = null;
   @Input() public automatic = true;
-  @Input() public multiselect = false;
+  @Input() public multiSelect = false;
   @Input() public theads: TableHead[] = [];
   @Input() public refresh = false;
   @Input() public pageSize = 10;
@@ -164,10 +165,11 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public actions: TableAction[] = [];
   @Input() public service: { url: string | null, method: string } = {url: null, method: 'GET'};
   @Input() public excel: ExcelSettingType;
-  @ContentChild(TemplateRef) templateRef: any;
   @Input() public draggable = false;
-  public orginal: any[] | null = null;
   @Input() events: Events<any> = new Events();
+  @Input() paas = false;
+  @ContentChild(TemplateRef, {static: true}) templateRef: any;
+  public original: any[] | null = null;
   public loaded: WatcherService = new WatcherService();
   public paging: Paging = {
     pageSize: 10,
@@ -177,11 +179,11 @@ export class TableComponent implements OnInit, OnDestroy {
   };
   public list: any[] = [];
   public sorting: { column: string | VariablePathResolver, descending: boolean, status: boolean } = {
-    column: '',
+    column: null,
     descending: false,
     status: this.sort
   };
-  public filter ? = {};
+  public filter: { [key: string]: any } = null;
   public body: any = {};
   public interval: { status: boolean, time: number } = {status: false, time: 30000};
   public timeout: number;
@@ -343,9 +345,9 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   clientSideLoading() {
-    this.orginal = this.orginal || this.rows;
+    this.original = this.original || this.rows;
     const startIndex = this.paging.pageNumber * this.paging.pageSize;
-    const filtered = JSON.parse(JSON.stringify(this.orginal && Util.findAllObjectInArray(this.orginal, this.filter, false)));
+    const filtered = JSON.parse(JSON.stringify(this.original && Util.findAllObjectInArray(this.original, this.filter, false)));
     this.rows = filtered.slice(startIndex, startIndex + this.paging.pageSize);
     this.paging.totalCount = filtered.length;
   }
@@ -353,13 +355,7 @@ export class TableComponent implements OnInit, OnDestroy {
   serverSideLoading() {
     // TODO this.loadingService.status(true, `${this.service.url} - table start`);
     this.api.request(this.service.method, this.service.url, {
-      body: {
-        data: this.filter,
-        pageNumber: this.paging.pageNumber,
-        pageSize: this.paging.pageSize,
-        sortList: this.getSort(),
-        ...this.body
-      }
+      params: this.manageQueryParams()
     }).subscribe(
       (response: ResponseBody<any>) => this.onLoadSuccessHandler(response),
       (error: ErrorResponse<any>) => this.onLoadErrorHandler(error)
@@ -370,6 +366,38 @@ export class TableComponent implements OnInit, OnDestroy {
     (this.serverSide && !!this.service.url) ? this.serverSideLoading() : this.clientSideLoading();
   }
 
+  manageQueryParams(): HttpParams {
+    const paging = {pageNumber: this.paging.pageNumber, pageSize: this.paging.pageSize};
+    let filtering = this.filter ? {...this.filter} : null;
+    let sorting = this.sorting.column ?
+      Util.setObjectPathValue(<string>this.sorting.column, this.sorting.descending ? 'DESC' : 'ASC') : null;
+    let parameters = Util.clearNullAndUndefined({paging, filter: filtering, sorting}, true);
+    if (this.paas) {
+      const queryParameter: { sort?: string, q?: string, offset?: number, limit?: number } = {};
+      queryParameter.limit = paging.pageSize;
+      queryParameter.offset = paging.pageNumber;
+      if (sorting) {
+        sorting = Util.extractObjectPathValues(sorting);
+        const sort = Object.keys(sorting).map(item => `${item} ${sorting[item]}`);
+        queryParameter.sort = sort.join(',');
+      }
+      if (filtering) {
+        filtering = Util.extractObjectPathValues(filtering);
+        const q = Object.keys(filtering).map((item, index) => `LIKE ${item} '%${filtering[item]}%'`);
+        queryParameter.q = q.join(' Or ');
+      }
+      parameters = queryParameter;
+    }
+    if (this.events.params) {
+      parameters = this.events.params(parameters);
+    }
+    let params = new HttpParams();
+    Object.keys(parameters).forEach((key) => {
+      params = params.append(key, JSON.stringify(parameters[key]));
+    });
+    return params;
+  }
+
   rendered(row?: any) {
     // TODO this.loadingService.status(false, `${this.service.url} - table complete - rows: ${row}`);
     this.loaded.next(this.rows);
@@ -377,7 +405,7 @@ export class TableComponent implements OnInit, OnDestroy {
 
   getSort() { // TODO: ileride this.sorting bir array olmali
     const sortList: any = {};
-    if (this.sorting !== null && this.sorting.status) {
+    if (this.sorting !== null && this.sorting.status && this.sorting.column) {
       sortList[`${this.sorting.column}`] = this.sorting.descending ? 'DESC' : 'ASC';
     }
     return sortList;
@@ -444,7 +472,7 @@ export class TableComponent implements OnInit, OnDestroy {
     clearTimeout(this.clickDelay);
     this.clickDelay = window.setTimeout(() => {
       if ($event.detail === 1) {
-        if (this.multiselect) {
+        if (this.multiSelect) {
           const index = this.list.indexOf(row);
           if (index < 0) {
             this._selected = row;

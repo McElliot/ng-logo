@@ -22,6 +22,7 @@ export class Events<T> {
     complete: () => null
   };
   public drag?: { start?: Function, complete: Function };
+  public params: (parameters) => void;
 
   constructor(events ?: Events<T>) {
     this.success = (response: any) => response;

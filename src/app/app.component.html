@@ -16,7 +16,7 @@
     (isActiveRouteEmitter)="isActiveRoute($event)"
     [isActiveRoute]="reference"
     [routerLink]="[]"
-    routerLinkActive="accordion-active"
+    routerLinkActive="active"
 >
   name
 </a> - this link is {{route && route.isActive ? 'active' : 'not active'}}
@@ -65,18 +65,24 @@
     [draggable]="true"
     [events]="tableDummyData.events"
     [hasPaging]="true"
-    [serverSide]="false"
     [sort]="true"
-    [multiselect]="true"
+    [mapPath]="'body'"
     [height]="'300px'"
-    [rows]="tableDummyData.rows"
-    [pageSize]="14"
+    [multiSelect]="true"
     [theads]="tableDummyData.heads"
     [excel]="tableDummyData.excel"
+    [paas]="true"
+    [pageSize]="20"
+    [refresh]="true"
+    [serverSide]="true"
+    [service]="{url: 'http://localhost:4200/assets/dummy/table.json?expandLevel=1&expand=Tenant', method: 'GET'}"
 >
   <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
     <td>
-      row: {{row.distributionZone.name}}
+      row: {{row.zone.name}}
+      <select>
+        <option>adad</option>
+      </select>
     </td>
   </ng-template>
 </logo-table>

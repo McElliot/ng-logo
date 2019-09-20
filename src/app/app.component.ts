@@ -3,8 +3,9 @@ import {LanguageService} from '@logo/language';
 import {RouterLinkActive} from '@angular/router';
 import {StateService, StorageClass} from '@logo/core';
 import {Title} from '@angular/platform-browser';
-import {TableComponent, TableMeta} from '@logo/table';
 import {ExcelSettingType} from '@logo/excel';
+import {Paging} from '@logo/paging';
+import {TableComponent, TableMeta} from '@logo/table';
 
 @Component({
   selector: 'lbs-root',
@@ -63,12 +64,12 @@ export class AppComponent {
       },
       {
         display: 'zones',
-        variablePath: 'distributionZone.name',
+        variablePath: 'zone.name',
         filter: 'text',
         sortable: true
       },
       {
-        display: 'delivery',
+        display: 'plate_number',
         variablePath: 'count',
         filter: 'text',
         sortable: true
@@ -88,7 +89,7 @@ export class AppComponent {
         variableFunction: (row: any) => row.count === 34 ? row.count + ' added text adsasd asdasdasd asdsad ' : 0,
         className: 'total',
         sortable: true,
-        sortingKey: 'distributionZone.name'
+        sortingKey: 'zone.name'
       }
     ],
     heads: [
@@ -98,29 +99,31 @@ export class AppComponent {
       }
     ],
     rows: [
-      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'konakcı', because: 'room with'},
-      {id: '2', distributionZone: {name: 'Adana'}, count: 6, surname: '', because: 'room with'},
-      {id: '3', distributionZone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', distributionZone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', distributionZone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', distributionZone: {name: 'Ceyhan'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', distributionZone: {name: 'Şile'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', distributionZone: {name: 'Konya'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', distributionZone: {name: 'Diyarbakır'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', distributionZone: {name: 'Malatya'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', distributionZone: {name: 'Kastamonu'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', distributionZone: {name: 'Bitlis'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', distributionZone: {name: 'Polatlı'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', distributionZone: {name: 'Van'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', distributionZone: {name: 'Bartın'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', distributionZone: {name: 'Kadıköy'}, count: 55, surname: 'deneme', because: 'room with'}
+      {id: '1', zone: {name: 'Çorum'}, count: 19, surname: 'konakcı', because: 'room with'},
+      {id: '2', zone: {name: 'Adana'}, count: 6, surname: '', because: 'room with'},
+      {id: '3', zone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', zone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', zone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', zone: {name: 'Ceyhan'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', zone: {name: 'Şile'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', zone: {name: 'Konya'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', zone: {name: 'Diyarbakır'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', zone: {name: 'Malatya'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', zone: {name: 'Kastamonu'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', zone: {name: 'Bitlis'}, count: 55, surname: 'deneme', because: 'room with'},
+      {id: '1', zone: {name: 'Polatlı'}, count: 19, surname: 'deneme', because: 'room with'},
+      {id: '2', zone: {name: 'Van'}, count: 6, surname: 'deneme', because: 'room with'},
+      {id: '3', zone: {name: 'Bartın'}, count: 34, surname: 'deneme', because: 'room with'},
+      {id: '4', zone: {name: 'Kadıköy'}, count: 55, surname: 'deneme', because: 'room with'}
     ],
     events: {
-      success: (response) => console.log(response, '===>'),
-      click: (row: any) => {
-        console.log('clicked');
+      success: (response) => console.log(response, '===> success'),
+      click: (row: any) => console.log('clicked', row),
+      dblclick: (row: any) => console.log('dblclick: ', row),
+      drag: {start: () => console.log('dragged started'), complete: () => console.log('dragged completed')},
+      params: (parameters: { filter: { [key: string]: any }, paging: Paging, sorting: { [key: string]: any } }) => {
+        return parameters;
       },
-      dblclick: (row: any) => console.log('dblclick: ', row)
     },
     actions: [
       {display: 'new', click: (table: TableComponent) => this.tableSampleAction('New', table), className: 'primary', disable: false},

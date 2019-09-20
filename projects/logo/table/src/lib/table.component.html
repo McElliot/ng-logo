@@ -76,7 +76,7 @@
       </tr>
     </ng-container>
     <tr (lastDoneEmitter)="rendered(null)" *ngIf="rows.length <= 0" [isLast]="true">
-      <td [colSpan]="columns.length" class="no-data">
+      <td [colSpan]="columns.length + theads.length" class="no-data">
         {{"no_data_were_found" | translate}}
       </td>
     </tr>
