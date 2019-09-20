@@ -79,30 +79,30 @@ const excelSample = {
   column: [
     {
       display: 'ID',
-      variable: 'id',
+      variablePath: 'id',
       hidden: true
     },
     {
       display: 'Code',
-      variable: 'code',
+      variablePath: 'code',
     },
     {
       display: 'Address',
-      variable: 'recipient.address',
+      variablePath: 'zone.address',
     },
     {
       display: 'Name',
-      variable: 'user.name',
+      variablePath: 'user.name',
     },
     {
       display: 'Surname',
-      variable: 'user.surname',
+      variablePath: 'user.surname',
     }
   ],
   data: [
-    {id: 1, code: 123213, recipient: {address: 'Doğruluk sok. 8/10 Ankara'}, user: {name: 'Serkan', surname: 'Konakcı'}},
-    {id: 2, code: 2134, recipient: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
-    {id: 3, code: 456456, recipient: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
+    {id: 1, code: 123213, zone: {address: 'Doğruluk sok. 8/10 Ankara'}, user: {name: 'Serkan', surname: 'Konakcı'}},
+    {id: 2, code: 2134, zone: {address: 'Ateş sok. 3/5 İstanbul'}, user: {name: 'Seda', surname: 'Sayan'}},
+    {id: 3, code: 456456, zone: {address: 'Kıvılcım apt. 5/23 Konya'}, user: {name: 'Banu', surname: 'Alkan'}},
   ]
 };
 ````

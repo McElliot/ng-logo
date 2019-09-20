@@ -112,5 +112,7 @@
   "image_upload_error": "This type of file is not supported",
   "image_upload_plugin_error": "Unable to enter into the plugin",
   "dismissed_toast": "Dismissed toast",
-  "record_found": "record(s) found"
+  "record_found": "record(s) found",
+  "refresh": "Refresh",
+  "plate_number": "Plate Number"
 }

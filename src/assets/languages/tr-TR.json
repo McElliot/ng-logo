@@ -63,5 +63,7 @@
   "please_wait_image_is_loading": "Eesim yükleniyor",
   "image_upload_error": "Bu tip uzantı desteklenmemektedir",
   "image_upload_plugin_error": "Plugin içerisine ulaşılamıyor",
-  "dismissed_toast": "Pop-up kapatıldı"
+  "dismissed_toast": "Pop-up kapatıldı",
+  "refresh": "Yenile",
+  "plate_number": "Plaka Numarası"
 }

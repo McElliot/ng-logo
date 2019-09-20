@@ -297,7 +297,7 @@ export class Util {
     let temp = {};
     props.reverse().forEach(function (key, index) {
       if (index === 0) {
-        temp[key] = value || null;
+        temp[key] = !Util.isNullOrUndef(value) ? value : null;
       } else {
         const hold = temp;
         temp = {};
@@ -329,6 +329,38 @@ export class Util {
       }));
     });
     return result;
+  }
+
+  /**
+   * This method extract object properties as a string with value
+   * @param object: any - The object will ve exracted
+   *
+   * Usage:
+   * const obj = {c: {t: {b: 123, m: 43, d: 48, e: {z: 2}}}, a: 13, b: 34};
+   * Util.extractObjectPathValues(obj); // returns {"c.t.b":123,"c.t.m":43,"c.t.d":48,"c.t.e.z":2,"a":13,"b":34}
+   */
+  static extractObjectPathValues(object: any) {
+    const convert = (data, path = [], parent?: boolean, result = {}) => {
+      if (!path) {
+        path = [];
+      }
+      Object.keys(data).forEach((item, index) => {
+        if ((data[item]).constructor === Object) {
+          path.push(item);
+          convert(data[item], path, true, result);
+        } else {
+          path.push(item);
+          const value = data[item];
+          if (!parent) {
+            path = [item];
+          }
+          result[path.join('.')] = value;
+          path.pop();
+        }
+      });
+      return result;
+    };
+    return convert(object);
   }
 
   /**
