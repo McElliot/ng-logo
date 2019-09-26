@@ -10,8 +10,8 @@
 
 import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
 import {Events} from './types/event.model';
-import {ExcelSettingType, ExcelTableColumn} from '@logo/excel';
-import {Pager, Paging} from '@logo/paging';
+import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
+import {Pager, Paging} from '@logo-software/paging';
 import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
 import {LanguageService} from '@logo-software/language';
 import {HttpParams} from '@angular/common/http';

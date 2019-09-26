@@ -5,7 +5,7 @@ With this module you can easly translate any text to specified language on the f
 ### Installation
 There are three steps:
 
- - Install package using `npm install @logo-softwarelanguage` 
+ - Install package using `npm install @logo-software/language` 
  - add it to your AppModule imports code block using `LanguageModule.forRoot(languageConf)`
  - Put your language files to your `assets/languages` folder (assets/language/en-En.json etc.). 
 
@@ -30,7 +30,7 @@ Just as below you can easily set you application's language.
  
 <sub>**app.module.ts**</sub>
 ```typescript
-import {LanguageInitSetting, LanguageModule} from '@logo-softwarelanguage';
+import {LanguageInitSetting, LanguageModule} from '@logo-software/language';
 
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
@@ -53,7 +53,7 @@ If you decide to use multiple language and change it using button to another one
 
 ```typescript
 import {Component} from '@angular/core';
-import {LanguageService} from '@logo-softwarelanguage';
+import {LanguageService} from '@logo-software/language';
 
 @Component({
   selector: 'lbs-root',

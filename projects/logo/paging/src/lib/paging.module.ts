@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
-import {LanguageModule} from '@logo-softwarelanguage';
+import {LanguageModule} from '@logo-software/language';
 import {PagingComponent} from './paging.component';
 
 @NgModule({

@@ -21,14 +21,14 @@
     "@angular/platform-browser": "~8.0.3",
     "@angular/platform-browser-dynamic": "~8.0.3",
     "@angular/router": "~8.0.3",
+    "@logo-software/core": "~0.0.10",
+    "@logo-software/excel": "~0.0.7",
+    "@logo-software/language": "0.0.1",
+    "@logo-software/paging": "~0.0.2",
+    "@logo-software/table": "~0.0.6",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
-    "zone.js": "~0.9.1",
-    "@logo-software/core": "~0.0.9",
-    "@logo-software/excel": "~0.0.7",
-    "@logo-software/language": "~0.0.1",
-    "@logo-software/paging": "~0.0.2",
-    "@logo-software/table": "~0.0.6"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.800.6",
