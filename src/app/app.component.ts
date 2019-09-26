@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {LanguageService} from '@logo/language';
+import {LanguageService} from '@logo-software/language';
 import {RouterLinkActive} from '@angular/router';
-import {StateService, StorageClass} from '@logo/core';
+import {StateService, StorageClass} from '@logo-software/core';
 import {Title} from '@angular/platform-browser';
-import {ExcelSettingType} from '@logo/excel';
-import {Paging} from '@logo/paging';
-import {TableComponent, TableMeta} from '@logo/table';
+import {ExcelSettingType} from '@logo-software/excel';
+import {Paging} from '@logo-software/paging';
+import {TableComponent, TableMeta} from '@logo-software/table';
 
 @Component({
   selector: 'lbs-root',

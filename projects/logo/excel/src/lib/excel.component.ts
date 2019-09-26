@@ -13,7 +13,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import * as FileSaver from 'file-saver';
 import {ExcelWriter} from './excel-writer.model';
 import {CvsWriter} from './cvs-writer.model';
-import {Util} from '@logo/core';
+import {Util} from '@logo-software/core';
 
 /**
  * @Input() data: any - Will be displayed data source

@@ -12,8 +12,8 @@ import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2
 import {Events} from './types/event.model';
 import {ExcelSettingType, ExcelTableColumn} from '@logo/excel';
 import {Pager, Paging} from '@logo/paging';
-import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo/core';
-import {LanguageService} from '@logo/language';
+import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
+import {LanguageService} from '@logo-software/language';
 import {HttpParams} from '@angular/common/http';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;

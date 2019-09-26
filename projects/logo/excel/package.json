@@ -1,10 +1,10 @@
 {
-  "name": "@logo/excel",
+  "name": "@logo-software/excel",
   "version": "0.0.7",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0",
-    "@logo/core": "~0.0.4"
+    "@logo-software/core": "~0.0.4"
   },
   "dependencies": {
     "file-saver": "^2.0.2",

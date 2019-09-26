@@ -1,12 +1,12 @@
 {
-  "name": "@logo/table",
+  "name": "@logo-software/table",
   "version": "0.0.6",
   "peerDependencies": {
     "@angular/common": "^7.0.0",
     "@angular/core": "^7.0.0"
   },
   "dependencies": {
-    "@logo/paging": "~0.0.2",
-    "@logo/core": "~0.0.3"
+    "@logo-software/paging": "~0.0.2",
+    "@logo-software/core": "~0.0.3"
   }
 }

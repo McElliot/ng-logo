@@ -44,29 +44,29 @@
       "loading/*": [
         "dist/loading/*"
       ],
-      "@logo/language": [
-        "dist/logo/language"
+      "@logo-software/language": [
+        "dist/logo-software/language"
       ],
-      "@logo/language/*": [
-        "dist/logo/language/*"
+      "@logo-software/language/*": [
+        "dist/logo-software/language/*"
       ],
-      "@logo/excel": [
-        "dist/logo/excel"
+      "@logo-software/excel": [
+        "dist/logo-software/excel"
       ],
-      "@logo/excel/*": [
-        "dist/logo/excel/*"
+      "@logo-software/excel/*": [
+        "dist/logo-software/excel/*"
       ],
-      "@logo/paging": [
-        "dist/logo/paging"
+      "@logo-software/paging": [
+        "dist/logo-software/paging"
       ],
-      "@logo/paging/*": [
-        "dist/logo/paging/*"
+      "@logo-software/paging/*": [
+        "dist/logo-software/paging/*"
       ],
-      "@logo/table": [
-        "dist/logo/table"
+      "@logo-software/table": [
+        "dist/logo-software/table"
       ],
-      "@logo/table/*": [
-        "dist/logo/table/*"
+      "@logo-software/table/*": [
+        "dist/logo-software/table/*"
       ]
     }
   }

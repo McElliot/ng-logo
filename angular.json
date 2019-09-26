@@ -133,7 +133,7 @@
         }
       }
     },
-    "@logo/core": {
+    "@logo-software/core": {
       "root": "projects/logo/core",
       "sourceRoot": "projects/logo/core/src",
       "projectType": "library",
@@ -168,7 +168,7 @@
         }
       }
     },
-    "@logo/language": {
+    "@logo-software/language": {
       "root": "projects/logo/language",
       "sourceRoot": "projects/logo/language/src",
       "projectType": "library",
@@ -203,7 +203,7 @@
         }
       }
     },
-    "@logo/excel": {
+    "@logo-software/excel": {
       "root": "projects/logo/excel",
       "sourceRoot": "projects/logo/excel/src",
       "projectType": "library",
@@ -238,7 +238,7 @@
         }
       }
     },
-    "@logo/paging": {
+    "@logo-software/paging": {
       "root": "projects/logo/paging",
       "sourceRoot": "projects/logo/paging/src",
       "projectType": "library",
@@ -273,7 +273,7 @@
         }
       }
     },
-    "@logo/table": {
+    "@logo-software/table": {
       "root": "projects/logo/table",
       "sourceRoot": "projects/logo/table/src",
       "projectType": "library",

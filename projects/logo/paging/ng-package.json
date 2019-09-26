@@ -1,10 +1,10 @@
 {
   "$schema": "../../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../../dist/logo/paging",
+  "dest": "../../../dist/logo-software/paging",
   "lib": {
     "entryFile": "src/public_api.ts"
   },
   "whitelistedNonPeerDependencies": [
-    "@logo/language"
+    "@logo-software/language"
   ]
 }

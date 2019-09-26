@@ -4,12 +4,12 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 
-import {CoreModule, STORAGE_TYPES} from '@logo/core';
-import {ExcelModule} from '@logo/excel';
-import {PagingModule} from '@logo/paging';
-import {LanguageInitSetting, LanguageModule} from '@logo/language';
+import {CoreModule, STORAGE_TYPES} from '@logo-software/core';
+import {ExcelModule} from '@logo-software/excel';
+import {PagingModule} from '@logo-software/paging';
+import {LanguageInitSetting, LanguageModule} from '@logo-software/language';
 import {TableModule} from '../../projects/logo/table/src/lib/table.module';
-// import {TableModule} from '@logo/table';
+// import {TableModule} from '@logo-software/table';
 
 const languageConf: LanguageInitSetting = {abbr: 'en', readFromFile: false, extension: 'json'};
 const EXTERNAL_MODULES = [
