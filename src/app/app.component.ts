@@ -63,24 +63,24 @@ export class AppComponent {
         hidden: false
       },
       {
-        display: 'zones',
+        display: 'zone.name',
         variablePath: 'zone.name',
         filter: 'text',
         sortable: true
       },
       {
-        display: 'plate_number',
+        display: 'count',
         variablePath: 'count',
         filter: 'text',
         sortable: true
       },
       {
-        display: 'test',
+        display: 'surname',
         variablePath: 'surname',
         filter: 'text'
       },
       {
-        display: 'neden',
+        display: 'because',
         variablePath: 'because',
         filter: 'text'
       },

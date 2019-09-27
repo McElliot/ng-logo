@@ -36,7 +36,7 @@
     <tr *ngIf="!reference && hasFilter">
       <th *ngFor="let column of columns" [hidden]="column.hidden ? column.hidden : false" class="filter">
         <label>
-          <input (keyup)="filterAdd(column.variablePath, $event.target.value)" *ngIf="!column.filterDisable"/>
+          <input (keyup)="filterAdd(column, $event.target.value)" *ngIf="!column.filterDisable"/>
           <input *ngIf="column.filterDisable" disabled/>
         </label>
       </th>
@@ -64,7 +64,7 @@
         <td
           *ngFor="let column of columns"
           [hidden]="column.hidden"
-          [innerHtml]="objectPathValue(row, column) | format : column.filter"
+          [innerHtml]="objectPathValue(row, column) | format : column.filterType"
           [ngClass]="setTdClass(row, column)"
         >
         </td>

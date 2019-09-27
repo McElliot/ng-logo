@@ -174,7 +174,7 @@ export class Util {
    * @param value - The value to test.
    * @returns Boolean
    */
-  static isNullOrUndef(value) {
+  static isNullOrUndef(value: any) {
     return value === null || typeof value === 'undefined';
   }
 
@@ -337,9 +337,9 @@ export class Util {
    *
    * Usage:
    * const obj = {c: {t: {b: 123, m: 43, d: 48, e: {z: 2}}}, a: 13, b: 34};
-   * Util.extractObjectPathValues(obj); // returns {"c.t.b":123,"c.t.m":43,"c.t.d":48,"c.t.e.z":2,"a":13,"b":34}
+   * Util.extractObjectAllValues(obj); // returns {"c.t.b":123,"c.t.m":43,"c.t.d":48,"c.t.e.z":2,"a":13,"b":34}
    */
-  static extractObjectPathValues(object: any) {
+  static extractObjectAllValues(object: any) {
     const convert = (data, path = [], parent?: boolean, result = {}) => {
       if (!path) {
         path = [];
