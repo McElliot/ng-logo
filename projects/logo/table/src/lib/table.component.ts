@@ -8,13 +8,16 @@
  * Any reproduction of this material must contain this notice.
  */
 
-import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
+import {ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
 import {Events} from './types/event.model';
 import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
-import {Pager, Paging} from '@logo-software/paging';
-import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
+// TODO import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
 import {LanguageService} from '@logo-software/language';
 import {HttpParams} from '@angular/common/http';
+import {Pager, Paging} from '../../../paging/src/lib/paging.component';
+import {WatcherService} from '../../../core/src/shared/services/watcher/watcher.service';
+import {EndpointService, ErrorResponse, ResponseBody} from '../../../core/src/shared/services/endpoint/endpoint.service';
+import {Util} from '../../../core/src/shared/util/util';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;
 export type VariableDataResolver = (data: any) => any;
@@ -117,7 +120,8 @@ export class TableColumn {
   display = '';
   variablePath?: VariablePathResolver | string;
   variableFunction?: VariableDataResolver;
-  filterType?: string | 'text' | 'percentage ' | 'decimal' | 'datetime' | 'number' | 'date' | null = 'text';
+  filterType?: 'text' | 'range ' | 'decimal' | 'number' | 'datetime' | 'date' | 'time' | null | string = 'text';
+  format?: string = null;
   filterDisable ? = false;
   hidden ? = true;
   className?;
@@ -163,6 +167,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public theads: TableHead[] = [];
   @Input() public refresh = false;
   @Input() public pageSize = 10;
+  @Input() public pageNumber = 1;
   @Input() public hasPaging = true;
   @Input() public hasFilter = true;
   @Input() public rows: any[] = [];
@@ -193,17 +198,18 @@ export class TableComponent implements OnInit, OnDestroy {
     status: this.sort
   };
   public filter: TableFilter[] = [];
-  public body: any = {};
   public interval: { status: boolean, time: number } = {status: false, time: 30000};
   public timeout: number;
   public drag: { start: boolean, list: any[] } = {start: false, list: []};
-  private filterDebounce = new WatcherService();
   private filterDelay: number = null;
   private clickDelay: number = null;
 
-  constructor(public elementRef: ElementRef, private api: EndpointService, private language: LanguageService, public renderer: Renderer2
-              // TODO private loadingService: LoadingService,
-  ) {
+  constructor(public elementRef: ElementRef,
+              private api: EndpointService,
+              private language: LanguageService,
+              public cd: ChangeDetectorRef,
+              public renderer: Renderer2
+              /* TODO private loadingService: LoadingService,*/) {
   }
 
   private _columns: TableColumn[] = [];
@@ -231,14 +237,12 @@ export class TableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // TODO this.loadingService.status(true, 'table init');
     this.paging.pageSize = this.pageSize;
+    this.paging.pageNumber = this.pageNumber;
     this.sorting.status = this.sort;
     this.service.method = this.service.method || 'GET';
-    // TODO debounce time could be set outside of the component
-    this.filterDebounce.debounce(1000).subscribe(() => {
-      this.setFilter();
-    });
     this._columns = this._columns.map((item: TableColumn) => {
       item.filterType = item.filterType ? item.filterType : 'text';
+      item.format = item.format ? item.format : '';
       return item;
     });
     if (this.automatic && !this.reference) {
@@ -251,11 +255,11 @@ export class TableComponent implements OnInit, OnDestroy {
     this.setExcelOptions();
   }
 
+
   ngOnDestroy() {
     if (this.interval.status) {
       this.reloadCancel();
     }
-    this.filterDebounce.unsubscribe();
     this.reset();
   }
 
@@ -346,12 +350,10 @@ export class TableComponent implements OnInit, OnDestroy {
 
   filterAdd(column: TableColumn, value: string) {
     window.clearTimeout(this.filterDelay);
-    console.log('keeyup');
     column = Util.type(column.variableFunction) === 'Function' ? column.variableFunction(this.rows[0]) : column;
     const filter = {...Util.setObjectPathValue(<string>column.variablePath, value), filterType: column.filterType};
     this.addFilter(filter);
-    // this.filterDebounce.next();
-    this.filterDelay = window.setTimeout(() => this.setFilter(), 1000);
+    this.filterDelay = window.setTimeout(() => this.setFilter(), 500);
   }
 
   addFilter(filter: TableFilter) {
@@ -373,7 +375,6 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   setFilter() {
-    console.log(this.filter);
     this.paging.pageNumber = 0; // !(<any>this.filter).isNull() ? 0 : this.paging.pageNumber;
     this.load();
   }
@@ -401,7 +402,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   manageQueryParams(): HttpParams {
-    let filter: TableFilter[] = this.filter.length > 0 ? this.filter : null;
+    const filter: TableFilter[] = this.filter.length > 0 ? this.filter : null;
     let sorting = this.sorting.column ?
       Util.setObjectPathValue(<string>this.sorting.column, this.sorting.descending ? 'DESC' : 'ASC') : null;
     const paging = {pageNumber: this.paging.pageNumber, pageSize: this.paging.pageSize};
@@ -409,7 +410,7 @@ export class TableComponent implements OnInit, OnDestroy {
     const ifPaas = {
       sorting: () => {
         if (sorting) {
-          sorting = Util.extractObjectPathValues(sorting);
+          sorting = Util.extractObjectAllValues(sorting);
           const sort = Object.keys(sorting).map(item => `${item} ${sorting[item]}`);
           queryParameter.sort = sort.join(',');
         }
@@ -420,9 +421,27 @@ export class TableComponent implements OnInit, OnDestroy {
       },
       filter: () => {
         if (filter) {
-          filter = Util.extractObjectPathValues(filter);
-          const q = Object.keys(filter).map((item, index) => `${item} LIKE '%${filter[item]}%'`);
-          queryParameter.q = q.join(' Or ');
+          const text = [];
+          filter.map(item => {
+            Object.keys(item).forEach((itemKey, itemKeyIndex) => {
+              if (itemKey !== 'filterType') {
+                const filterObject = Util.extractObjectAllValues(item);
+                const name = Object.keys(filterObject).find((path, index) => path !== 'filterType');
+                console.log(filterObject);
+                if (item['filterType'] === 'number') {
+                  text.push(`${name} = ${filterObject[name]}`);
+                } else if (item['filterType'] === 'date') {
+                  text.push(`${name} = ${filterObject[name]}`);
+                } else if (item['filterType'] === 'custom') {
+                  text.push(`${name} '${filterObject[name]}'`);
+                } else {
+                  text.push(`${name} like '%${filterObject[name]}%'`);
+                }
+              }
+            });
+          });
+          console.log(text.join(' Or '));
+          queryParameter.q = text.join(' Or ');
         }
       }
     };
@@ -503,9 +522,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   onPageChangeHandler(page: Pager) {
-    if (page.currentPage) {
-      this.paging.pageNumber = page.currentPage - 1;
-    }
+    this.paging.pageNumber = page.pageNumber;
     this.load();
   }
 
@@ -641,7 +658,7 @@ export class TableComponent implements OnInit, OnDestroy {
   reset() {
     this.paging = {
       pageSize: this.paging.pageSize,
-      pageNumber: 0,
+      pageNumber: 1,
       totalCount: 0,
       totalPages: 0
     };

@@ -11,13 +11,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
-
-
-import {CoreModule} from '@logo-software/core';
+// TODO import {CoreModule} from '@logo-software/core';
 import {LanguageModule} from '@logo-software/language';
-import {PagingModule} from '@logo-software/paging';
 import {TableComponent} from './table.component';
 import {ExcelModule} from '@logo-software/excel';
+import {PagingModule} from '../../../paging/src/lib/paging.module';
+import {CoreModule} from '../../../core/src/lib/core.module';
 
 @NgModule({
   imports: [CommonModule, PagingModule, HttpClientModule, LanguageModule, CoreModule, ExcelModule],
