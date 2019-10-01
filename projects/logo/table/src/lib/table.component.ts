@@ -8,16 +8,14 @@
  * Any reproduction of this material must contain this notice.
  */
 
-import {ChangeDetectorRef, Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
-import {Events} from './types/event.model';
-import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
-// TODO import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
-import {LanguageService} from '@logo-software/language';
+import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {HttpParams} from '@angular/common/http';
-import {Pager, Paging} from '../../../paging/src/lib/paging.component';
-import {WatcherService} from '../../../core/src/shared/services/watcher/watcher.service';
-import {EndpointService, ErrorResponse, ResponseBody} from '../../../core/src/shared/services/endpoint/endpoint.service';
-import {Util} from '../../../core/src/shared/util/util';
+import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
+import {LanguageService} from '@logo-software/language';
+import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
+import {Paging} from '@logo-software/paging/lib/paging.component';
+import {Events} from './types/event.model';
+import {Pager} from '@logo-software/paging';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;
 export type VariableDataResolver = (data: any) => any;
@@ -207,8 +205,6 @@ export class TableComponent implements OnInit, OnDestroy {
   constructor(public elementRef: ElementRef,
               private api: EndpointService,
               private language: LanguageService,
-              public cd: ChangeDetectorRef,
-              public renderer: Renderer2
               /* TODO private loadingService: LoadingService,*/) {
   }
 
@@ -351,12 +347,17 @@ export class TableComponent implements OnInit, OnDestroy {
   filterAdd(column: TableColumn, value: string) {
     window.clearTimeout(this.filterDelay);
     column = Util.type(column.variableFunction) === 'Function' ? column.variableFunction(this.rows[0]) : column;
-    const filter = {...Util.setObjectPathValue(<string>column.variablePath, value), filterType: column.filterType};
-    this.addFilter(filter);
+    (this.serverSide) ? this.serverSideFilter(column, value) : this.clientSideFilter(column, value);
     this.filterDelay = window.setTimeout(() => this.setFilter(), 500);
   }
 
-  addFilter(filter: TableFilter) {
+  clientSideFilter(column, value) {
+    const filter = Util.clearNullAndUndefined({...this.filter, ...Util.setObjectPathValue(<string>column.variablePath, value)}, true);
+    this.filter = filter;
+  }
+
+  serverSideFilter(column, value) {
+    const filter = {...Util.setObjectPathValue(<string>column.variablePath, value), filterType: column.filterType};
     const newFilter = [];
     this.filter.forEach((item) => {
         Object.keys(item).forEach((key) => {
@@ -375,13 +376,13 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   setFilter() {
-    this.paging.pageNumber = 0; // !(<any>this.filter).isNull() ? 0 : this.paging.pageNumber;
+    this.paging.pageNumber = 1;
     this.load();
   }
 
   clientSideLoading() {
     this.original = this.original || this.rows;
-    const startIndex = this.paging.pageNumber * this.paging.pageSize;
+    const startIndex = (this.paging.pageNumber - 1) * this.paging.pageSize;
     const filtered = JSON.parse(JSON.stringify(this.original && Util.findAllObjectInArray(this.original, this.filter, false)));
     this.rows = filtered.slice(startIndex, startIndex + this.paging.pageSize);
     this.paging.totalCount = filtered.length;
@@ -662,6 +663,7 @@ export class TableComponent implements OnInit, OnDestroy {
       totalCount: 0,
       totalPages: 0
     };
+    this.filter = [];
     this.rows = [];
   }
 }

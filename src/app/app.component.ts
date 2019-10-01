@@ -56,34 +56,12 @@ export class AppComponent {
     status: true,
     list: [],
     columns: [
-      {
-        display: 'ID',
-        variablePath: 'id',
-        filter: 'text',
-        hidden: false
-      },
-      {
-        display: 'zone.name',
-        variablePath: 'zone.name',
-        filter: 'text',
-        sortable: true
-      },
-      {
-        display: 'count',
-        variablePath: 'count',
-        filter: 'text',
-        sortable: true
-      },
-      {
-        display: 'surname',
-        variablePath: 'surname',
-        filter: 'text'
-      },
-      {
-        display: 'because',
-        variablePath: 'because',
-        filter: 'text'
-      },
+      {display: 'ID', variablePath: 'id', filterType: 'text', hidden: false},
+      {display: 'zone.name', variablePath: 'zone.name', filterType: 'text', sortable: true},
+      {display: 'count', variablePath: 'percentage', filterType: 'range', format: '2.2-3:"en-EN"', sortable: true},
+      {display: 'date', variablePath: 'hour', filterType: 'date', format: 'MM.dd.yyyy', sortable: true},
+      {display: 'surname', variablePath: 'surname', filterType: 'custom'},
+      {display: 'because', variablePath: 'because', filterType: 'number', format: '4.4-7:"en-EN"', sortable: true},
       {
         display: 'total',
         variableFunction: (row: any) => row.count === 34 ? row.count + ' added text adsasd asdasdasd asdsad ' : 0,
@@ -99,22 +77,22 @@ export class AppComponent {
       }
     ],
     rows: [
-      {id: '1', zone: {name: 'Çorum'}, count: 19, surname: 'konakcı', because: 'room with'},
-      {id: '2', zone: {name: 'Adana'}, count: 6, surname: '', because: 'room with'},
-      {id: '3', zone: {name: 'İstanbul'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', zone: {name: 'Samsun'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', zone: {name: 'Çorum'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', zone: {name: 'Ceyhan'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', zone: {name: 'Şile'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', zone: {name: 'Konya'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', zone: {name: 'Diyarbakır'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', zone: {name: 'Malatya'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', zone: {name: 'Kastamonu'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', zone: {name: 'Bitlis'}, count: 55, surname: 'deneme', because: 'room with'},
-      {id: '1', zone: {name: 'Polatlı'}, count: 19, surname: 'deneme', because: 'room with'},
-      {id: '2', zone: {name: 'Van'}, count: 6, surname: 'deneme', because: 'room with'},
-      {id: '3', zone: {name: 'Bartın'}, count: 34, surname: 'deneme', because: 'room with'},
-      {id: '4', zone: {name: 'Kadıköy'}, count: 55, surname: 'deneme', because: 'room with'}
+      {id: '1', zone: {name: 'Çorum'}, percentage: 19, hour: '2019-01-13', surname: 'konakcı', because: 2132131},
+      {id: '2', zone: {name: 'Adana'}, percentage: 6, hour: '2019-12-22', surname: 'meydancı', because: 1235},
+      {id: '3', zone: {name: 'İstanbul'}, percentage: 34, hour: '2018-03-13', surname: 'uyar', because: 54466},
+      {id: '4', zone: {name: 'Samsun'}, percentage: 55, hour: '2017-06-15', surname: 'güler', because: 65467},
+      {id: '1', zone: {name: 'Çorum'}, percentage: 19, hour: '2019-12-31', surname: 'sevim', because: 9876543},
+      {id: '2', zone: {name: 'Ceyhan'}, percentage: 6, hour: '2013-05-11', surname: 'çakmak', because: 4556132},
+      {id: '3', zone: {name: 'Şile'}, percentage: 34, hour: '2014-06-05', surname: 'duran', because: 543567},
+      {id: '4', zone: {name: 'Konya'}, percentage: 55, hour: '2019-05-23', surname: 'güleç', because: 743567},
+      {id: '1', zone: {name: 'Diyarbakır'}, percentage: 19, hour: '2019-07-05', surname: 'toraman', because: 98723567},
+      {id: '2', zone: {name: 'Malatya'}, percentage: 6, hour: '2019-03-15', surname: 'kandır', because: 43787654},
+      {id: '3', zone: {name: 'Kastamonu'}, percentage: 34, hour: '2019-08-13', surname: 'misafir', because: 123824},
+      {id: '4', zone: {name: 'Bitlis'}, percentage: 55, hour: '2019-02-03', surname: 'deneme', because: 234567},
+      {id: '1', zone: {name: 'Polatlı'}, percentage: 19, hour: '2019-09-21', surname: 'deneme', because: 23589},
+      {id: '2', zone: {name: 'Van'}, percentage: 6, hour: '2011-11-19', surname: 'deneme', because: 354353},
+      {id: '3', zone: {name: 'Bartın'}, percentage: 34, hour: '2011-03-23', surname: 'deneme', because: 34539},
+      {id: '4', zone: {name: 'Kadıköy'}, percentage: 55, hour: '2016-02-27', surname: 'deneme', because: 93922}
     ],
     events: {
       success: (response) => console.log(response, '===> success'),
