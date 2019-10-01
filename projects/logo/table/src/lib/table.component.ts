@@ -8,16 +8,26 @@
  * Any reproduction of this material must contain this notice.
  */
 
-import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, Renderer2, TemplateRef} from '@angular/core';
-import {Events} from './types/event.model';
-import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
-import {Pager, Paging} from '@logo-software/paging';
+import {Component, ContentChild, ElementRef, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {HttpParams} from '@angular/common/http';
 import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from '@logo-software/core';
 import {LanguageService} from '@logo-software/language';
-import {HttpParams} from '@angular/common/http';
+import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
+import {Paging} from '@logo-software/paging/lib/paging.component';
+import {Events} from './types/event.model';
+import {Pager} from '@logo-software/paging';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;
 export type VariableDataResolver = (data: any) => any;
+
+/**
+ * Table filter interface must be the this properties
+ */
+export interface TableFilter {
+  filterType: string;
+
+  [key: string]: any;
+}
 
 /**
  * The Table Meta class is used for type definition.
@@ -96,7 +106,7 @@ export class TableSorting {
  * This property can also be assigned as a function. If use as a function, it must return object path again.
  * For example: Rest service return {person: {name: 'serkan', surname: 'konakcı'}} and you want to display surname on this column
  * you must to set the variablePath field value to 'person.surname' Sample: column.variablePath = 'person.surnaname'
- * @prop {String} [filter=''] - format of the Pipe types {text | date | percentage | decimal | datetime | number }
+ * @prop {String} [filterType=''] - format of the Pipe types {text | date | percentage | decimal | datetime | number }
  * @prop {boolean} [filterDisable=false] if it is true filter of the thead will be disabled input textbox
  * @prop {function} [classFunction] method used for return class name
  * @prop {function} [variableFunction] method used for change data before return
@@ -108,7 +118,8 @@ export class TableColumn {
   display = '';
   variablePath?: VariablePathResolver | string;
   variableFunction?: VariableDataResolver;
-  filter?: string | 'text' | 'percentage ' | 'decimal' | 'datetime' | 'number' | 'date' | null = 'text';
+  filterType?: 'text' | 'range ' | 'decimal' | 'number' | 'datetime' | 'date' | 'time' | null | string = 'text';
+  format?: string = null;
   filterDisable ? = false;
   hidden ? = true;
   className?;
@@ -154,6 +165,7 @@ export class TableComponent implements OnInit, OnDestroy {
   @Input() public theads: TableHead[] = [];
   @Input() public refresh = false;
   @Input() public pageSize = 10;
+  @Input() public pageNumber = 1;
   @Input() public hasPaging = true;
   @Input() public hasFilter = true;
   @Input() public rows: any[] = [];
@@ -183,17 +195,17 @@ export class TableComponent implements OnInit, OnDestroy {
     descending: false,
     status: this.sort
   };
-  public filter: { [key: string]: any } = null;
-  public body: any = {};
+  public filter: TableFilter[] = [];
   public interval: { status: boolean, time: number } = {status: false, time: 30000};
   public timeout: number;
   public drag: { start: boolean, list: any[] } = {start: false, list: []};
-  private filterDebounce = new WatcherService();
+  private filterDelay: number = null;
   private clickDelay: number = null;
 
-  constructor(public elementRef: ElementRef, private api: EndpointService, private language: LanguageService, public renderer: Renderer2
-              // TODO private loadingService: LoadingService,
-  ) {
+  constructor(public elementRef: ElementRef,
+              private api: EndpointService,
+              private language: LanguageService,
+              /* TODO private loadingService: LoadingService,*/) {
   }
 
   private _columns: TableColumn[] = [];
@@ -221,12 +233,12 @@ export class TableComponent implements OnInit, OnDestroy {
   ngOnInit() {
     // TODO this.loadingService.status(true, 'table init');
     this.paging.pageSize = this.pageSize;
+    this.paging.pageNumber = this.pageNumber;
     this.sorting.status = this.sort;
     this.service.method = this.service.method || 'GET';
-    // TODO debounce time could be set outside of the component
-    this.filterDebounce.debounce(1000).subscribe((value) => this.setFilter(value));
     this._columns = this._columns.map((item: TableColumn) => {
-      item.filter = item.filter ? item.filter : 'text';
+      item.filterType = item.filterType ? item.filterType : 'text';
+      item.format = item.format ? item.format : '';
       return item;
     });
     if (this.automatic && !this.reference) {
@@ -239,11 +251,11 @@ export class TableComponent implements OnInit, OnDestroy {
     this.setExcelOptions();
   }
 
+
   ngOnDestroy() {
     if (this.interval.status) {
       this.reloadCancel();
     }
-    this.filterDebounce.unsubscribe();
     this.reset();
   }
 
@@ -332,21 +344,45 @@ export class TableComponent implements OnInit, OnDestroy {
     return data;
   }
 
-  filterAdd(property: any, value: string) {
-    property = Util.type(property) === 'Function' ? property(this.rows[0]) : property;
-    const object = {...this.filter, ...Util.setObjectPathValue(property, value)};
-    this.filterDebounce.next(Util.clearNullAndUndefined(object, true));
+  filterAdd(column: TableColumn, value: string) {
+    window.clearTimeout(this.filterDelay);
+    column = Util.type(column.variableFunction) === 'Function' ? column.variableFunction(this.rows[0]) : column;
+    (this.serverSide) ? this.serverSideFilter(column, value) : this.clientSideFilter(column, value);
+    this.filterDelay = window.setTimeout(() => this.setFilter(), 500);
   }
 
-  setFilter(filter: any) {
+  clientSideFilter(column, value) {
+    const filter = Util.clearNullAndUndefined({...this.filter, ...Util.setObjectPathValue(<string>column.variablePath, value)}, true);
     this.filter = filter;
-    this.paging.pageNumber = 0; // !(<any>this.filter).isNull() ? 0 : this.paging.pageNumber;
+  }
+
+  serverSideFilter(column, value) {
+    const filter = {...Util.setObjectPathValue(<string>column.variablePath, value), filterType: column.filterType};
+    const newFilter = [];
+    this.filter.forEach((item) => {
+        Object.keys(item).forEach((key) => {
+          if (key !== 'filterType' && Util.isNullOrUndef(filter[key])) {
+            if (!!Util.clearNullAndUndefined(item[key])) {
+              newFilter.push(item);
+            }
+          }
+        });
+      }
+    );
+    if (Object.keys(Util.clearNullAndUndefined(filter, true)).length > 1) {
+      newFilter.push(filter);
+    }
+    this.filter = newFilter;
+  }
+
+  setFilter() {
+    this.paging.pageNumber = 1;
     this.load();
   }
 
   clientSideLoading() {
     this.original = this.original || this.rows;
-    const startIndex = this.paging.pageNumber * this.paging.pageSize;
+    const startIndex = (this.paging.pageNumber - 1) * this.paging.pageSize;
     const filtered = JSON.parse(JSON.stringify(this.original && Util.findAllObjectInArray(this.original, this.filter, false)));
     this.rows = filtered.slice(startIndex, startIndex + this.paging.pageSize);
     this.paging.totalCount = filtered.length;
@@ -367,25 +403,54 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   manageQueryParams(): HttpParams {
-    const paging = {pageNumber: this.paging.pageNumber, pageSize: this.paging.pageSize};
-    let filtering = this.filter ? {...this.filter} : null;
+    const filter: TableFilter[] = this.filter.length > 0 ? this.filter : null;
     let sorting = this.sorting.column ?
       Util.setObjectPathValue(<string>this.sorting.column, this.sorting.descending ? 'DESC' : 'ASC') : null;
-    let parameters = Util.clearNullAndUndefined({paging, filter: filtering, sorting}, true);
+    const paging = {pageNumber: this.paging.pageNumber, pageSize: this.paging.pageSize};
+    const queryParameter: { sort?: string, q?: string, offset?: number, limit?: number } = {};
+    const ifPaas = {
+      sorting: () => {
+        if (sorting) {
+          sorting = Util.extractObjectAllValues(sorting);
+          const sort = Object.keys(sorting).map(item => `${item} ${sorting[item]}`);
+          queryParameter.sort = sort.join(',');
+        }
+      },
+      paging: () => {
+        queryParameter.limit = paging.pageSize;
+        queryParameter.offset = paging.pageNumber;
+      },
+      filter: () => {
+        if (filter) {
+          const text = [];
+          filter.map(item => {
+            Object.keys(item).forEach((itemKey, itemKeyIndex) => {
+              if (itemKey !== 'filterType') {
+                const filterObject = Util.extractObjectAllValues(item);
+                const name = Object.keys(filterObject).find((path, index) => path !== 'filterType');
+                console.log(filterObject);
+                if (item['filterType'] === 'number') {
+                  text.push(`${name} = ${filterObject[name]}`);
+                } else if (item['filterType'] === 'date') {
+                  text.push(`${name} = ${filterObject[name]}`);
+                } else if (item['filterType'] === 'custom') {
+                  text.push(`${name} '${filterObject[name]}'`);
+                } else {
+                  text.push(`${name} like '%${filterObject[name]}%'`);
+                }
+              }
+            });
+          });
+          console.log(text.join(' Or '));
+          queryParameter.q = text.join(' Or ');
+        }
+      }
+    };
+    let parameters = Util.clearNullAndUndefined({paging, filter, sorting}, true);
     if (this.paas) {
-      const queryParameter: { sort?: string, q?: string, offset?: number, limit?: number } = {};
-      queryParameter.limit = paging.pageSize;
-      queryParameter.offset = paging.pageNumber;
-      if (sorting) {
-        sorting = Util.extractObjectPathValues(sorting);
-        const sort = Object.keys(sorting).map(item => `${item} ${sorting[item]}`);
-        queryParameter.sort = sort.join(',');
-      }
-      if (filtering) {
-        filtering = Util.extractObjectPathValues(filtering);
-        const q = Object.keys(filtering).map((item, index) => `${item} LIKE '%${filtering[item]}%'`);
-        queryParameter.q = q.join(' Or ');
-      }
+      Object.keys(ifPaas).forEach((key) => {
+        ifPaas[key]();
+      });
       parameters = queryParameter;
     }
     if (this.events.params) {
@@ -458,9 +523,7 @@ export class TableComponent implements OnInit, OnDestroy {
   }
 
   onPageChangeHandler(page: Pager) {
-    if (page.currentPage) {
-      this.paging.pageNumber = page.currentPage - 1;
-    }
+    this.paging.pageNumber = page.pageNumber;
     this.load();
   }
 
@@ -596,10 +659,11 @@ export class TableComponent implements OnInit, OnDestroy {
   reset() {
     this.paging = {
       pageSize: this.paging.pageSize,
-      pageNumber: 0,
+      pageNumber: 1,
       totalCount: 0,
       totalPages: 0
     };
+    this.filter = [];
     this.rows = [];
   }
 }

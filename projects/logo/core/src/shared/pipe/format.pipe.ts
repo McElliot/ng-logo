@@ -33,7 +33,7 @@ export class FormatPipe implements PipeTransform {
         parsedFloat = !isNaN(parseFloat(input)) ? parseFloat(input) : 0;
         format = pipeArgs.length > 1 ? pipeArgs[1] : null;
         return this.decimalPipe.transform(parsedFloat, format);
-      case 'percentage':
+      case 'range':
         parsedFloat = !isNaN(parseFloat(input)) ? parseFloat(input) : 0;
         format = pipeArgs.length > 1 ? pipeArgs[1] : null;
         return this.decimalPipe.transform(parsedFloat, format) + '%';

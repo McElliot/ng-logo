@@ -5,21 +5,21 @@
   </div>
   <div class="page-numbers">
     <ul *ngIf="pager.pages && pager.pages.length >= 2" class="pagination">
-      <li [ngClass]="{disabled:pager.currentPage === 1}" class="first">
+      <li [ngClass]="{disabled:pager.pageNumber === 1}" class="first">
         <a (click)="setPage(1)">First</a>
       </li>
       <li class="separator">|</li>
-      <li [ngClass]="{disabled:pager.currentPage === 1}" class="previous">
-        <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+      <li [ngClass]="{disabled:pager.pageNumber === 1}" class="previous">
+        <a (click)="setPage(pager.pageNumber - 1)">Previous</a>
       </li>
-      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="pages">
+      <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.pageNumber === page}" class="pages">
         <a (click)="setPage(page)">{{page}}</a>
       </li>
-      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="next">
-        <a (click)="setPage(pager.currentPage + 1)">Next</a>
+      <li [ngClass]="{disabled:pager.pageNumber === pager.totalPages}" class="next">
+        <a (click)="setPage(pager.pageNumber + 1)">Next</a>
       </li>
       <li class="separator">|</li>
-      <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="last">
+      <li [ngClass]="{disabled:pager.pageNumber === pager.totalPages}" class="last">
         <a (click)="setPage(pager.totalPages)">Last</a>
       </li>
     </ul>

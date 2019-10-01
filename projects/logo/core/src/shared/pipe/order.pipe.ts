@@ -46,7 +46,7 @@ export class OrderPipe implements PipeTransform {
   }
 
   transform(input: any, sorting: any): any {
-    if (!sorting || (!sorting.column && !sorting.status)) {
+    if (!sorting || !sorting.column || !sorting.status) {
       return input;
     }
     const value = [...input]; // make a copy of the input's reference

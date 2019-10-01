@@ -13,7 +13,7 @@ export interface Paging {
 
 export interface Pager {
   totalItems?: number;
-  currentPage?: number;
+  pageNumber?: number;
   pageSize?: number;
   startPage?: number;
   endPage?: number;
@@ -31,29 +31,28 @@ export interface Pager {
 export class PagingComponent implements OnChanges {
   @Input() totalCount: number;
   @Input() pageSize = 10;
+  @Input() pageNumber = 1;
   @HostBinding('class.app-paging') classes = true;
-  @Output() paging = new EventEmitter();
+  @Output() paging: EventEmitter<Pager> = new EventEmitter<Pager>();
   public pager: Pager = {};
   public totalPages: number;
 
   ngOnChanges(changes: SimpleChanges) {
     this.totalPages = Math.ceil(this.totalCount / this.pageSize);
-    this.pager = this.getPager(this.totalCount, 1, this.pageSize);
+    this.pager = this.getPager(this.totalCount, this.pageNumber, this.pageSize);
   }
 
   setPage(page: number) {
-    if (page < 1 || page > this.totalPages) {
-      return;
+    if (page >= 1 && page <= this.totalPages) {
+      this.pager = this.getPager(this.totalCount, page, this.pageSize);
+      this.paging.emit(this.pager);
     }
-    this.pager = this.getPager(this.totalCount, page, this.pageSize);
-    this.paging.emit(this.pager);
   }
 
-  getPager(totalItems: number, currentPage = 1, pageSize = 10) {
+  getPager(totalItems: number, pageNumber = 1, pageSize = 10): Pager {
     // calculate total pages
     const totalPages = Math.ceil(totalItems / pageSize);
     const threshold = 10;
-
     let startPage: number, endPage: number;
     if (totalPages <= threshold) {
       // less than 10 total pages so show all
@@ -61,29 +60,26 @@ export class PagingComponent implements OnChanges {
       endPage = totalPages;
     } else {
       // more than 10 total pages so calculate start and end pages
-      if (currentPage <= 6) {
+      if (pageNumber <= 6) {
         startPage = 1;
         endPage = threshold;
-      } else if (currentPage + 4 >= totalPages) {
+      } else if (pageNumber + 4 >= totalPages) {
         startPage = totalPages - 9;
         endPage = totalPages;
       } else {
-        startPage = currentPage - 5;
-        endPage = currentPage + 4;
+        startPage = pageNumber - 5;
+        endPage = pageNumber + 4;
       }
     }
-
     // calculate start and end item indexes
-    const startIndex = (currentPage - 1) * pageSize;
+    const startIndex = (pageNumber - 1) * pageSize;
     const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
-
     // create an array of pages to ng-repeat in the pager control
     const pages = this.range(startPage, endPage + 1 - startPage);
-
     // return object with all pager properties required by the view
     return {
       totalItems: totalItems,
-      currentPage: currentPage,
+      pageNumber: pageNumber,
       pageSize: pageSize,
       totalPages: totalPages,
       startPage: startPage,

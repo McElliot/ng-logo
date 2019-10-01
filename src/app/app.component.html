@@ -64,7 +64,6 @@
     [hasFilter]="true"
     [draggable]="true"
     [events]="tableDummyData.events"
-    [hasPaging]="true"
     [sort]="true"
     [mapPath]="'body'"
     [height]="'300px'"
@@ -72,18 +71,16 @@
     [theads]="tableDummyData.heads"
     [excel]="tableDummyData.excel"
     [paas]="true"
+    [hasPaging]="true"
     [pageSize]="20"
+    [pageNumber]="1"
     [refresh]="true"
-    [serverSide]="true"
+    [rows]="tableDummyData.rows"
     [service]="{url: 'http://localhost:4200/assets/dummy/table.json?expandLevel=1&expand=Tenant', method: 'GET'}"
+    [serverSide]="false"
 >
   <ng-template let-i="index" let-last="isLast" let-odd="isOdd" let-row="row">
-    <td>
-      row: {{row.zone.name}}
-      <select>
-        <option>adad</option>
-      </select>
-    </td>
+    <td>row: {{row.zone.name}}</td>
   </ng-template>
 </logo-table>
 <router-outlet></router-outlet>
