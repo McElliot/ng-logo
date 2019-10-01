@@ -14,8 +14,8 @@ import {EndpointService, ErrorResponse, ResponseBody, Util, WatcherService} from
 import {LanguageService} from '@logo-software/language';
 import {ExcelSettingType, ExcelTableColumn} from '@logo-software/excel';
 import {Paging} from '@logo-software/paging/lib/paging.component';
-import {Events} from './types/event.model';
 import {Pager} from '@logo-software/paging';
+import {Events} from './types/event.model';
 
 export type VariablePathResolver = (row: any, column?: TableColumn) => string;
 export type VariableDataResolver = (data: any) => any;
@@ -441,8 +441,7 @@ export class TableComponent implements OnInit, OnDestroy {
               }
             });
           });
-          console.log(text.join(' Or '));
-          queryParameter.q = text.join(' Or ');
+          queryParameter.q = text.join(' And ');
         }
       }
     };

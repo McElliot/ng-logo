@@ -58,13 +58,13 @@ export class AppComponent {
     columns: [
       {display: 'ID', variablePath: 'id', filterType: 'text', hidden: false},
       {display: 'zone.name', variablePath: 'zone.name', filterType: 'text', sortable: true},
-      {display: 'count', variablePath: 'percentage', filterType: 'range', format: '2.2-3:"en-EN"', sortable: true},
-      {display: 'date', variablePath: 'hour', filterType: 'date', format: 'MM.dd.yyyy', sortable: true},
+      {display: 'count', variablePath: 'percentage', filterType: 'range', format: '1.1-3:"en-EN"', sortable: true},
+      {display: 'date', variablePath: 'hour', filterType: 'date', format: 'yyyy.MM.dd HH:mm', sortable: true},
       {display: 'surname', variablePath: 'surname', filterType: 'custom'},
-      {display: 'because', variablePath: 'because', filterType: 'number', format: '4.4-7:"en-EN"', sortable: true},
+      {display: 'because', variablePath: 'because', filterType: 'number', format: '4.2-3', sortable: true},
       {
         display: 'total',
-        variableFunction: (row: any) => row.count === 34 ? row.count + ' added text adsasd asdasdasd asdsad ' : 0,
+        variableFunction: (row: any) => row.percentage === 34 ? row.percentage + ' added text adsasd asdasdasd asdsad ' : 0,
         className: 'total',
         sortable: true,
         sortingKey: 'zone.name'
