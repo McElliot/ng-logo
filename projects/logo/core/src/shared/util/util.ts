@@ -112,6 +112,10 @@ export class Util {
           }
         }
       });
+    } else if (_this.constructor === Array) {
+      if (_this.length > 0) {
+        return _this.filter(item => !Util.isObjectNull(Util.clearNullAndUndefined(item, hard)));
+      }
     }
     return _this;
   }
