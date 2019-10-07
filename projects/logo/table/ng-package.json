@@ -6,6 +6,7 @@
   },
   "whitelistedNonPeerDependencies": [
     "@logo-software/paging",
-    "@logo-software/core"
+    "@logo-software/core",
+    "@logo-software/excel"
   ]
 }
